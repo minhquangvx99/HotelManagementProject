@@ -5,7 +5,6 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { InfoWraper, UserDropDown } from './AuthInfoStyle';
 import { Popover } from 'components/popup/Popup';
-import { NotificationBox } from './Notification';
 import { logout } from 'store/auth/Actions';
 import { themeColor } from 'config/theme/ThemeVariables';
 import { Heading } from 'components/heading/Heading';
@@ -101,7 +100,6 @@ export const AuthInfo = React.memo<IAuthInfo>(() => {
           Admin
         </div>
       </div>
-      <NotificationBox />
       <div className="ninjadash-nav-actions__item ninjadash-nav-actions__author" style={{ marginRight: 20, marginLeft: 5 }}>
         <Popover placement="bottomRight" content={userContent} trigger="click">
           <Link to="#" className="ninjadash-nav-action-link">

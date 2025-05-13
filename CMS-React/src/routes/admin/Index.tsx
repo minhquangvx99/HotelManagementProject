@@ -2,20 +2,12 @@ import { Suspense, lazy, useEffect } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import withAdminLayout from 'layout/withAdminLayout';
 import React from 'react';
-import ClassRoute from './Class';
-import CategoryRoute from './Category';
-import QuestionRoute from './Question';
-import TopicRoute from './Topic';
-import StudentRoute from './Student';
+import HotelRoute from './Hotel';
+// import TopicRoute from './Topic';
 import AccountRoute from './Account';
 import { Spin } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store/RootReducer';
-import {
-  createNotificationToken,
-  fetchListNotificationMessageByUserID,
-} from 'store/notification/Actions';
-import ReportRoute from './Report';
 
 const NotFound = lazy(() => import('container/pages/404'));
 
@@ -31,14 +23,6 @@ const Admin = React.memo<IAdmin>(() => {
   const dispatch = useDispatch<any>();
   const myInfo = useSelector((states: RootState) => states.auth.myInfo);
 
-  const disPatchApi = (obj: any) => {
-    dispatch(createNotificationToken(obj));
-  };
-
-  const dispatchFetchListMessage = () => {
-    dispatch(fetchListNotificationMessageByUserID(myInfo?.ID ?? 0));
-  };
-
   return (
     <Suspense
       fallback={
@@ -48,13 +32,9 @@ const Admin = React.memo<IAdmin>(() => {
       }
     >
       <Routes>
-        <Route path="*" element={<Navigate to="class" replace />} />
-        <Route index path="class/*" element={<ClassRoute />} />
-        <Route index path="report/*" element={<ReportRoute />} />
-        <Route path="category/*" element={<CategoryRoute />} />
-        <Route path="question/*" element={<QuestionRoute />} />
-        <Route path="topic/*" element={<TopicRoute />} />
-        <Route path="student/*" element={<StudentRoute />} />
+        <Route path="*" element={<Navigate to="hotel" replace />} />
+        <Route index path="hotel/*" element={<HotelRoute />} />
+        {/* <Route path="topic/*" element={<TopicRoute />} /> */}
         <Route path="account/*" element={<AccountRoute />} />
         <Route path="*" element={<NotFound />} />
       </Routes>

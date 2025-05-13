@@ -25,10 +25,10 @@ namespace Services.Hotels
         {
             var parameters = new { Offset = (pageIndex - 1) * pageSize, PageSize = pageSize, SearchKey = searchKey };
             var sqlCount = "SELECT h.* FROM Hotel h " +
-                        "WHERE h.Name LIKE '%'+@SearchKey+'%' OR h.Address LIKE '%'+@SearchKey+'%' OR CAST(h.StarsNumber AS VARCHAR) + ' sao' LIKE '%'+@SearchKey+'%' OR h.PhoneNumber LIKE '%'+@SearchKey+'%' ";
+                        "WHERE h.Name LIKE '%'+@SearchKey+'%' OR h.Address LIKE '%'+@SearchKey+'%' OR CAST(h.StarsNumber AS VARCHAR) + ' sao' LIKE '%'+@SearchKey+'%' OR 'KS' + CAST(h.ID AS VARCHAR) LIKE '%'+@SearchKey+'%' OR h.ManagerName LIKE '%'+@SearchKey+'%' OR h.PhoneNumber LIKE '%'+@SearchKey+'%' ";
             totalRow = unitOfWork.Query<HotelEntity>(sqlCount, parameters).ToList().Count();
             var sql = "SELECT h.* FROM Hotel h " +
-                        "WHERE h.Name LIKE '%'+@SearchKey+'%' OR h.Address LIKE '%'+@SearchKey+'%' OR  CAST(h.StarsNumber AS VARCHAR) + ' sao' LIKE '%'+@SearchKey+'%' OR h.PhoneNumber LIKE '%'+@SearchKey+'%' " +
+                        "WHERE h.Name LIKE '%'+@SearchKey+'%' OR h.Address LIKE '%'+@SearchKey+'%' OR CAST(h.StarsNumber AS VARCHAR) + ' sao' LIKE '%'+@SearchKey+'%' OR 'KS' + CAST(h.ID AS VARCHAR) LIKE '%'+@SearchKey+'%' OR h.ManagerName LIKE '%'+@SearchKey+'%'  OR h.PhoneNumber LIKE '%'+@SearchKey+'%' " +
                         "ORDER BY h.ModifiedDate DESC OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY;";
             return unitOfWork.Query<HotelEntity>(sql, parameters).ToList();
         }

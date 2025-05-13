@@ -2,7 +2,6 @@ import { Col, Form, Input, Modal, Row } from 'antd';
 import { FC, useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { AuthFormWrap } from './Style';
 import { RootState } from 'store/RootReducer';
 import { CheckboxChangeEvent } from 'antd/es/checkbox';
@@ -60,22 +59,6 @@ const SignIn: FC<ISignIn> = () => {
             <div className="ninjadash-authentication-top">
               <h1 className="ninjadash-authentication-top__title">Log in</h1>
             </div>
-            <div className="ninjadash-authentication-top">
-              <h5
-                style={{ paddingTop: '25px', color: '#194F9F', fontWeight: '700' }}
-                className="ninjadash-authentication-top__title"
-              >
-                Online Study Exam
-              </h5>
-            </div>
-            <div className="ninjadash-authentication-top">
-              <h5
-                style={{ paddingTop: '5px', color: '#194F9F', fontWeight: '500' }}
-                className="ninjadash-authentication-top__title"
-              >
-                Simulator and practice exams
-              </h5>
-            </div>
             <div className="ninjadash-authentication-content">
               <Form name="login" form={form} onFinish={handleSubmit} layout="vertical">
                 <Form.Item
@@ -98,18 +81,6 @@ const SignIn: FC<ISignIn> = () => {
                   <Checkbox onChange={onChange} checked={state.checked} style={{ fontWeight: '600' }}>
                     Remember me
                   </Checkbox>
-                  <Link
-                    style={{
-                      color: 'blue',
-                      textAlign: 'center',
-                      fontFamily: 'sans-serif',
-                      fontSize: '14px',
-                      textDecoration: 'underline',
-                    }}
-                    to={'/forgotPassword'}
-                  >
-                    Forgot Password
-                  </Link>
                 </div>
                 <Form.Item>
                   <Button
@@ -152,44 +123,15 @@ const SignIn: FC<ISignIn> = () => {
                   >
                     <FontAwesome name="phone" size="4x" style={{ color: themeColor['white-color'] }} />
                   </div>
-                  <Heading as="h2">091.334.5162</Heading>
+                  <Heading as="h2">012.345.6789</Heading>
                 </div>
               </Modal>
-            </div>
-            <div className="ninjadash-authentication-bottom">
-              <p>
-                Don't have an account? &nbsp;
-                <Link to="/register" onClick={handleRegisterClick}>
-                  <u style={{ color: 'blue' }}>Register</u>
-                </Link>
-              </p>
-
-              <Link
-                style={{
-                  color: 'blue',
-                  textAlign: 'center',
-                  fontFamily: 'sans-serif',
-                  fontSize: '14px',
-                  textDecoration: 'underline',
-                  marginRight: '40px',
-                }}
-                onClick={() => setOpen(true)}
-                to={''}
-              >
-                Contact Us
-              </Link>
             </div>
           </AuthFormWrap>
         </Col>
       </Row>
       <div>
         <Row justify="center" style={{ marginTop: '10px' }}>
-          <h5 style={{ textAlign: 'center', fontFamily: 'sans-serif' }}>Copyright &copy; 2010-2024,</h5>
-          <h5 style={{ textAlign: 'center', fontFamily: 'sans-serif', color: '#164D9E' }}>
-            Smart Learning All rights reserved
-          </h5>
-        </Row>
-        <Row justify="center" style={{ marginTop: '-5px' }}>
           <h5
             style={{
               color: 'blue',

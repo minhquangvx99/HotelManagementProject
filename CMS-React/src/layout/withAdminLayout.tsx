@@ -44,12 +44,12 @@ const withAdminLayout = (WrappedComponent: FC<IWrappedComponent>) => {
     });
     const [currentQuestionID, setCurrentQuestionID] = useState(localStorage.getItem('currentQuestionID'));
     const [currentQuestionCode, setCurrentQuestionCode] = useState(localStorage.getItem('currentSingleQuestionCode'));
-    const ExamTypeID = useSelector((state: RootState) => state.topicSet.topicSetForEdit?.ExamTypeID) || null;
-    const TopicSetID = useSelector((state: RootState) => state.topicSet.topicSetForEdit?.TopicSetID) || null;
+    // const ExamTypeID = useSelector((state: RootState) => state.topicSet.topicSetForEdit?.ExamTypeID) || null;
+    // const TopicSetID = useSelector((state: RootState) => state.topicSet.topicSetForEdit?.TopicSetID) || null;
     const getExamTypeCode = () => {
-      if (ExamTypeID && TopicSetID) {
-        return `${ExamTypeID}-D${TopicSetID}`;
-      }
+      // if (ExamTypeID && TopicSetID) {
+      //   return `${ExamTypeID}-D${TopicSetID}`;
+      // }
 
       return null; // Return null or any default value if either ID is missing
     };
@@ -153,32 +153,10 @@ const withAdminLayout = (WrappedComponent: FC<IWrappedComponent>) => {
       switch (location.pathname) {
         case '/admin/account':
           return 'Account';
-        case '/admin/question':
-          return 'Question Management';
         case '/admin/topic':
           return `Exam Management`;
-        case '/admin/student':
-          return 'Student Information Management';
-        case '/admin/class':
-          return 'Class Management';
-        case '/admin/category':
-          return 'Category Management';
-        case '/admin/student/categoryInfoStudent':
-          return 'Student Information Management';
-        case '/admin/question/errorQuestion':
-          return 'Review Import Questions';
-        case '/admin/question/addQuestion':
-          return currentQuestionID
-            ? `ID: ${currentQuestionID}_Single Question`
-            : currentQuestionCode
-              ? `Single Question ${currentQuestionCode}`
-              : 'Single Question';
-        case '/admin/question/addCompositeQuestion':
-          return currentQuestionID?.includes('CQ')
-            ? `Composite Question ${currentQuestionID}`
-            : currentQuestionID
-              ? `ID: ${currentQuestionID}_Composite Question`
-              : 'Composite Question';
+        case '/admin/hotel':
+          return 'Hotel Management';
         case '/admin/topic/addTopic':
           return `Exam Detail${getExamTypeCode() ? `: ${getExamTypeCode()}` : ''}`;
         default:
@@ -283,24 +261,6 @@ const withAdminLayout = (WrappedComponent: FC<IWrappedComponent>) => {
             <Layout className="atbd-main-layout">
               <Content>
                 <WrappedComponent {...props} />
-                <FooterStyle className="admin-footer">
-                  <Row>
-                    <Col md={12} xs={24}>
-                      <span className="admin-footer__copyright">
-                        Copyright © 2024, <Link to="#">Smart Learning All rights reserved</Link>
-                      </span>
-                    </Col>
-                    <Col md={12} xs={24}>
-                      <div className="admin-footer__links">
-                        <NavLink to="#" onClick={showModal}>
-                          Contact Us
-                        </NavLink>
-                        <NavLink to="#">Learn More</NavLink>
-                        <NavLink to="#">About Us</NavLink>
-                      </div>
-                    </Col>
-                  </Row>
-                </FooterStyle>
               </Content>
             </Layout>
           </Layout>

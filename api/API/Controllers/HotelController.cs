@@ -1,12 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Linq;
-using System.Collections.Generic;
 using BusinessLogicLayer.Interfaces.IHotels;
-using BusinessLogicLayer.Interfaces.IRooms;
 using API.Models.Hotel;
 using Entities.Hotel;
-using BusinessLogicLayer.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers
@@ -16,13 +12,9 @@ namespace API.Controllers
     public class HotelController : BaseController
     {
         private readonly IHotelBS _hotelBS;
-        private readonly IRoomBS _roomBS;
-        private readonly IUserBS _userBS;
-        public HotelController(IHotelBS hotelBS, IRoomBS roomBS, IUserBS userBS)
+        public HotelController(IHotelBS hotelBS)
         {
             _hotelBS = hotelBS;
-            _roomBS = roomBS;
-            _userBS = userBS;
         }
 
         [AllowAnonymous]
@@ -129,19 +121,19 @@ namespace API.Controllers
         [AllowAnonymous]
         [Route("update")]
         [HttpPost]
-        public IActionResult Update(HotelUpdateModel hotelUpdateModel)
+        public IActionResult Update(HotelEntity hotelUpdateModel)
         {
             try
             {
-                var hotel = _hotelBS.GetById(hotelUpdateModel.hotel.ID);
+                var hotel = _hotelBS.GetById(hotelUpdateModel.ID);
                 if (hotel == null) return ReturnError("Hotel does not exist");
 
-                hotel.ID = hotelUpdateModel.hotel.ID;
-                hotel.Name = hotelUpdateModel.hotel.Name;
-                hotel.Address = hotelUpdateModel.hotel.Address;
-                hotel.PhoneNumber = hotelUpdateModel.hotel.PhoneNumber;
-                hotel.StarsNumber = hotelUpdateModel.hotel.StarsNumber;
-                hotel.ManagerName = hotelUpdateModel.hotel.ManagerName;
+                hotel.ID = hotelUpdateModel.ID;
+                hotel.Name = hotelUpdateModel.Name;
+                hotel.Address = hotelUpdateModel.Address;
+                hotel.PhoneNumber = hotelUpdateModel.PhoneNumber;
+                hotel.StarsNumber = hotelUpdateModel.StarsNumber;
+                hotel.ManagerName = hotelUpdateModel.ManagerName;
                 hotel.ModifiedDate = DateTime.Now;
 
 /*                // check tên đã tồn tại

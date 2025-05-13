@@ -30,22 +30,15 @@ export interface UpdateAccountInformationModel {
 
 export interface MyInfo {
   ID: number;
-  RoleID: number;
-  ClassID: number;
   Name: string;
   Status: number;
   Email: string;
   Username: string;
   Birthday: string;
-  Title: string;
-  Company: string;
   Address: string;
   PhoneNumber: string;
   Password: string;
   Gender: number;
-  ActiveDate: string;
-  ExpireDate: string;
-  TuitionFee: number;
 }
 
 export interface LoginState {

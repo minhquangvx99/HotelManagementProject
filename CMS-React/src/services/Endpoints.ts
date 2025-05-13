@@ -2,7 +2,6 @@ import { EndpointError } from './errors/Endpoints';
 
 // authen
 export const API_ENDPOINT_LOGIN = '/api/Home/login';
-export const API_ENDPOINT_FORGOT_PASSWORD = '/api/forgot-password';
 export const API_ENDPOINT_LOGOUT = '/api/logout';
 export const API_ENDPOINT_MY_INFO = '/api/User/accountInformation';
 export const API_CHANGE_PASSWORD = '/api/User/changePassword';

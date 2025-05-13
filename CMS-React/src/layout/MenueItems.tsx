@@ -1,8 +1,4 @@
 import UilHome from '@iconscout/react-unicons/dist/icons/uil-home';
-import UilChart from '@iconscout/react-unicons/dist/icons/uil-chart';
-import UilPen from '@iconscout/react-unicons/dist/icons/uil-pen';
-import UilSetting from '@iconscout/react-unicons/dist/icons/uil-setting';
-import UilUsersAlt from '@iconscout/react-unicons/dist/icons/uil-users-alt';
 import UilEllipsisV from '@iconscout/react-unicons/dist/icons/uil-ellipsis-v';
 import { FC, ReactNode, Key, useState } from 'react';
 import { Menu, MenuProps } from 'antd';
@@ -52,63 +48,23 @@ const MenuItems: FC<IMenuItems> = ({ toggleCollapsed }) => {
 
   const items = [
     getItem(
-      <NavLink onClick={toggleCollapsed} to={`${path}/class`}>
-        Class Management
+      <NavLink onClick={toggleCollapsed} to={`${path}/hotel`}>
+        Hotel Management
       </NavLink>,
-      'class',
+      'hotel',
       undefined,
-      <NavLink className="menuItem-icon" to={`${path}/class`}>
+      <NavLink className="menuItem-icon" to={`${path}/hotel`}>
         <UilHome />
       </NavLink>,
     ),
     getItem(
-      <NavLink onClick={toggleCollapsed} to={`${path}/category`}>
-        Category Management
+      <NavLink onClick={toggleCollapsed} to={`${path}/room`}>
+        Room Management
       </NavLink>,
-      'category',
+      'room',
       undefined,
-      <NavLink className="menuItem-icon" to={`${path}/category`}>
-        <UilChart />
-      </NavLink>,
-    ),
-    getItem(
-      <NavLink onClick={toggleCollapsed} to={`${path}/question`}>
-        Question Management
-      </NavLink>,
-      'question',
-      undefined,
-      <NavLink className="menuItem-icon" to={`${path}/question`}>
-        <UilPen />
-      </NavLink>,
-    ),
-    getItem(
-      <NavLink onClick={toggleCollapsed} to={`${path}/topic`}>
-        Exam Management
-      </NavLink>,
-      'topic',
-      undefined,
-      <NavLink className="menuItem-icon" to={`${path}/topic`}>
-        <UilSetting />
-      </NavLink>,
-    ),
-    getItem(
-      <NavLink onClick={toggleCollapsed} to={`${path}/student`}>
-        Student Information Management
-      </NavLink>,
-      'student',
-      undefined,
-      <NavLink className="menuItem-icon" to={`${path}/student`}>
-        <UilUsersAlt />
-      </NavLink>,
-    ),
-    getItem(
-      <NavLink onClick={toggleCollapsed} to={`${path}/report`}>
-        Exam Report
-      </NavLink>,
-      'report',
-      undefined,
-      <NavLink className="menuItem-icon" to={`${path}/report`}>
-        <UilSetting />
+      <NavLink className="menuItem-icon" to={`${path}/room`}>
+        <UilHome />
       </NavLink>,
     ),
   ];

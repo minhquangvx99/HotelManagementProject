@@ -20,102 +20,102 @@
 
 import { WithLogoutAction } from 'types/Global';
 import {
-  ClassActionTypes,
-  ClassState,
-  DELETE_CLASS,
-  DELETE_CLASS_ERR,
-  FETCH_LIST_CLASS_PAGING,
-  FETCH_LIST_CLASS_PAGING_ERR,
-  FETCH_LIST_CLASS_PAGING_SUCCESS,
-  SAVE_CLASS,
-  SAVE_CLASS_ERR,
-  UPDATE_CLASS_FOR_EDIT,
-  FETCH_LIST_CLASS_ALL,
-  FETCH_LIST_CLASS_ALL_ERR,
-  FETCH_LIST_CLASS_ALL_SUCCESS,
-  SAVE_CLASS_SUCCESS,
-  DELETE_CLASS_SUCCESS,
+  HotelActionTypes,
+  HotelState,
+  DELETE_HOTEL,
+  DELETE_HOTEL_ERR,
+  FETCH_LIST_HOTEL_PAGING,
+  FETCH_LIST_HOTEL_PAGING_ERR,
+  FETCH_LIST_HOTEL_PAGING_SUCCESS,
+  SAVE_HOTEL,
+  SAVE_HOTEL_ERR,
+  UPDATE_HOTEL_FOR_EDIT,
+  FETCH_LIST_HOTEL_ALL,
+  FETCH_LIST_HOTEL_ALL_ERR,
+  FETCH_LIST_HOTEL_ALL_SUCCESS,
+  SAVE_HOTEL_SUCCESS,
+  DELETE_HOTEL_SUCCESS,
 } from './Types';
 
-const initialState: ClassState = {};
+const initialState: HotelState = {};
 
 
-const classReducer = (state = initialState, action: WithLogoutAction<ClassActionTypes>): ClassState => {
+const hotelReducer = (state = initialState, action: WithLogoutAction<HotelActionTypes>): HotelState => {
   switch (action.type) {
-    case FETCH_LIST_CLASS_PAGING:
+    case FETCH_LIST_HOTEL_PAGING:
       return {
         ...state,
         loading: true,
       };
-    case FETCH_LIST_CLASS_PAGING_SUCCESS:
+    case FETCH_LIST_HOTEL_PAGING_SUCCESS:
       return {
         ...state,
         loading: false,
         dataPaging: action.payload,
       };
-    case FETCH_LIST_CLASS_PAGING_ERR:
+    case FETCH_LIST_HOTEL_PAGING_ERR:
       return {
         ...state,
         loading: false,
         error: action.payload,
       };
-    case FETCH_LIST_CLASS_ALL:
+    case FETCH_LIST_HOTEL_ALL:
       return {
         ...state,
         loading: true,
       };
-    case FETCH_LIST_CLASS_ALL_SUCCESS:
+    case FETCH_LIST_HOTEL_ALL_SUCCESS:
       return {
         ...state,
         loading: false,
         data: action.payload,
       };
-    case FETCH_LIST_CLASS_ALL_ERR:
+    case FETCH_LIST_HOTEL_ALL_ERR:
       return {
         ...state,
         loading: false,
         error: action.payload,
       };
-    case SAVE_CLASS:
+    case SAVE_HOTEL:
       return {
         ...state,
         loading: true,
       };
-    case SAVE_CLASS_SUCCESS:
+    case SAVE_HOTEL_SUCCESS:
       return {
         ...state,
         loading: false,
       };
-    case SAVE_CLASS_ERR:
+    case SAVE_HOTEL_ERR:
       return {
         ...state,
         loading: false,
         error: action.payload,
       };
-    case DELETE_CLASS:
+    case DELETE_HOTEL:
       return {
         ...state,
         loading: true,
       };
-    case DELETE_CLASS_SUCCESS:
+    case DELETE_HOTEL_SUCCESS:
       return {
         ...state,
         loading: false,
       };
-    case DELETE_CLASS_ERR:
+    case DELETE_HOTEL_ERR:
       return {
         ...state,
         loading: false,
         error: action.payload,
       };
-    case UPDATE_CLASS_FOR_EDIT:
+    case UPDATE_HOTEL_FOR_EDIT:
       return {
         ...state,
-        classForEdit: action.payload,
+        hotelForEdit: action.payload,
       };
     default:
       return state;
   }
 };
 
-export default classReducer;
+export default hotelReducer;
