@@ -32,35 +32,15 @@ namespace API.Code
             {
                 try
                 {
-                    
                     var payload = new JwtBuilder()
                         .WithAlgorithm(new HMACSHA256Algorithm()) // symmetric
                         .WithSecret(TokenSecret)
                         .MustVerifySignature()
                         .Decode<IDictionary<string, object>>(_token);
 
-                    var expired = (long)payload["Expired"];
-
-                    if (DateTimeOffset.UtcNow.ToUnixTimeSeconds() > expired)
-                    {
-                        filterContext.HttpContext.Response.StatusCode = (int)HttpStatusCode.Forbidden;
-                        filterContext.HttpContext.Response.HttpContext.Features.Get<IHttpResponseFeature>().ReasonPhrase = "Not Authorized";
-                        filterContext.Result = new JsonResult("Token timeout")
-                        {
-                            Value = new
-                            {
-                                Status = "Error",
-                                Message = "Token timeout"
-                            },
-                        };
-                    }
-                    else
-                    {
-                        var serializeModel = JsonConvert.DeserializeObject<UserEntity>(payload["User"].ToString());
-                        UserPrincipal newUser = UserPrincipal.genFromModel(serializeModel);
-                        filterContext.HttpContext.User = newUser;
-                    }
-
+                    var serializeModel = JsonConvert.DeserializeObject<UserEntity>(payload["User"].ToString());
+                    UserPrincipal newUser = UserPrincipal.genFromModel(serializeModel);
+                    filterContext.HttpContext.User = newUser;
                 }
                 catch (Exception ex)
                 {
