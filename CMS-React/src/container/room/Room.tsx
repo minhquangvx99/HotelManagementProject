@@ -14,10 +14,12 @@ import { Link, useNavigate } from 'react-router-dom';
 import { themeColor } from 'config/theme/ThemeVariables';
 import { Heading } from 'components/heading/Heading';
 import {
+  createRoom,
   deleteRoom,
   fetchDetailsRoom,
   fetchListRoomPaging,
   passRoomDetails,
+  updateRoom,
 } from 'store/room/Actions';
 import { RoomModel } from 'store/room/Types';
 import { fetchListHotelAll } from 'store/hotel/Actions';
@@ -42,23 +44,16 @@ interface IRoomTableData {
 interface IRoom { }
 
 const Room: FC<IRoom> = (props) => {
-  const PageRoutes: Route[] = [
-    {
-      path: '',
-      breadcrumbName: 'Room',
-    },
-    {
-      path: '',
-      breadcrumbName: 'List',
-    },
-  ];
 
   const navigate = useNavigate();
 
   const roomList = useSelector((states: RootState) => states.room.dataPaging);
   const roomForEdit = useSelector((states: RootState) => states.room.roomForEdit);
   const listAllHotel = useSelector((states: RootState) => states.hotel.data);
+  const loading = useSelector((states: RootState) => states.room.loading);
   const [form] = Form.useForm();
+  const [form1] = Form.useForm();
+  const numberInput = Form.useWatch('Number', form1);
   const statusShow = [
     { value: 0, label: 'Chưa cho thuê' },
     { value: 1, label: 'Đã cho thuê' },
@@ -68,17 +63,16 @@ const Room: FC<IRoom> = (props) => {
   const dispatch = useDispatch<any>();
   const [state, setState] = useState({
     keyChange: '',
-    modalConfirmChangeSelectVisible: false,
     itemChangeStatus: {} as RoomModel,
     statusToChange: -1,
     typeConfirm: 1,
-    RoomIDToDelete: -1,
     roomSelectToDelete: {} as RoomModel,
     page: 1,
     codeSearch: '',
     type: '',
     hotelId: 0,
     status: '',
+    modalConfirmVisible: false,
   });
   const getListAllHotel = () => {
     // call API lấy list exam for select
@@ -115,19 +109,6 @@ const Room: FC<IRoom> = (props) => {
 
   const onChangePage = (page: number) => {
     setState({ ...state, page });
-  };
-
-  const closeModalChangeSelectConfirm = () => {
-    setState({ ...state, modalConfirmChangeSelectVisible: false });
-  };
-
-  // filter list theo keyword - đang fake data, sau khi có API => call API getListCate()
-  const filter = () => {
-    if (state.page === 1) {
-      getListRoom();
-    } else {
-      setState((state) => ({ ...state, page: 1 }));
-    }
   };
 
   const dataTableColumn = [
@@ -250,17 +231,11 @@ const Room: FC<IRoom> = (props) => {
   ];
 
   const handleEdit = async (roomID: number) => {
-    try {
-      await dispatch(fetchDetailsRoom(roomID));
-      navigate('/admin/topic/addRoom');
-    } catch (error) {
-      console.error('Failed to fetch topic set details:', error);
-    }
+
   };
 
   const handleAdd = () => {
-    dispatch(passRoomDetails(null));
-    navigate('/admin/topic/addRoom');
+
   };
 
   const handleSearch = () => {
@@ -279,24 +254,14 @@ const Room: FC<IRoom> = (props) => {
       setState((state) => ({ ...state, page: 1 }));
     }
   };
-  const handleSelectChange = (item: RoomModel, value: number) => {
-    setState({
-      ...state,
-      itemChangeStatus: item,
-      statusToChange: value,
-      modalConfirmChangeSelectVisible: true,
-      typeConfirm: 1,
-    });
-  };
 
   const handleDeleteRoom = () => {
-    dispatch(deleteRoom(state.RoomIDToDelete));
-    setState({ ...state, RoomIDToDelete: -1, modalConfirmChangeSelectVisible: false, page: 1 });
+    roomForEdit?.ID && dispatch(deleteRoom(roomForEdit?.ID));
+    getListRoom();
+    !loading && closeModalConfirm();
+    setState((state) => ({ ...state, page: 1 }));
   };
 
-  const openDeleteConfirmModel = (RoomID: any) => {
-    setState({ ...state, modalConfirmChangeSelectVisible: true, typeConfirm: 2, RoomIDToDelete: RoomID });
-  };
   const getListSelectHotel = () => {
     let listHotel = [] as { value?: number; label: string; name: string }[];
     listAllHotel?.map((e) => {
@@ -314,6 +279,52 @@ const Room: FC<IRoom> = (props) => {
     }).format(value);
 
     return formattedValue.replace('₫', 'VND');
+  };
+
+  const openModalConfirm = (typeConfirm: number, cate: RoomModel) => {
+    dispatch(fetchDetailsRoom(cate?.ID ?? 0));
+    setState((state) => ({ ...state, modalConfirmVisible: true, typeConfirm }));
+  };
+
+  const closeModalConfirm = () => {
+    setState((state) => ({ ...state, modalConfirmVisible: false }));
+  };
+
+  const onSubmit = () => {
+    formRef1.current?.submit();
+    if (formRef1.current?.getFieldsError().length !== 0) {
+      if (state.typeConfirm === 1) {
+        save();
+      } else {
+        handleDeleteRoom();
+      }
+    }
+  };
+
+  const save = () => {
+    if (roomForEdit?.ID) {
+      let roomItem = {
+        ID: roomForEdit?.ID,
+        Number: formRef1.current?.getFieldValue('Number')?.trim(),
+        Status: formRef1.current?.getFieldValue('Status'),
+        HotelId: formRef1.current?.getFieldValue('HotelId'),
+        Type: formRef1.current?.getFieldValue('Type')?.trim(),
+        Price: formRef1.current?.getFieldValue('Price'),
+      };
+      dispatch(createRoom(roomItem));
+    }
+    else {
+      let roomItem = {
+        Number: formRef1.current?.getFieldValue('Number')?.trim(),
+        Status: formRef1.current?.getFieldValue('Status'),
+        HotelId: formRef1.current?.getFieldValue('HotelId'),
+        Type: formRef1.current?.getFieldValue('Type')?.trim(),
+        Price: formRef1.current?.getFieldValue('Price'),
+      };
+      dispatch(updateRoom(roomItem));
+    }
+    !loading && closeModalConfirm();
+    setState((state) => ({ ...state, searchKey: '', page: 1 }));
   };
 
   const tableDataScource: IRoomTableData[] = [];
@@ -400,10 +411,7 @@ const Room: FC<IRoom> = (props) => {
             <Link
               className="edit"
               to="#"
-              onClick={(e) => {
-                e.preventDefault(); // Prevent default link behavior
-                handleEdit(ID ?? 0);
-              }}
+              onClick={(e) => { () => openModalConfirm(1, item) }}
             >
               <UilPen style={{ width: 20 }} color={themeColor['dark-gray']} />
             </Link>
@@ -412,16 +420,10 @@ const Room: FC<IRoom> = (props) => {
       ),
       action2: (
         <div className="table-actions">
-          <Tooltip title={Status == 0 ? 'Delete' : 'Cannot delete this item'}>
-            {Status == 0 ? (
-              <Link className="delete" to="#" onClick={() => openDeleteConfirmModel(ID)}>
-                <UilTrashAlt style={{ width: 24 }} color={themeColor['danger-color']} />
-              </Link>
-            ) : (
-              <span className="delete-disabled">
-                <UilTrashAlt style={{ width: 24 }} color={themeColor['danger-color']} />
-              </span>
-            )}
+          <Tooltip title={'Delete'}>
+            <Link className="delete" to="#" onClick={() => openModalConfirm(2, item)}>
+              <UilTrashAlt style={{ width: 24 }} color={themeColor['danger-color']} />
+            </Link>
           </Tooltip>
         </div>
       ),
@@ -430,6 +432,7 @@ const Room: FC<IRoom> = (props) => {
 
   const totalRows = roomList?.totalRow ?? 0;
   const formRef = useRef<FormInstance<any>>(null);
+  const formRef1 = useRef<FormInstance<any>>(null);
   return (
     <RoomMainLayout>
       {/* <PageHeader className="ninjadash-page-header-main" /> */}
@@ -627,28 +630,77 @@ const Room: FC<IRoom> = (props) => {
         <Modal
           closable={false}
           centered
-          open={state.modalConfirmChangeSelectVisible}
-          onCancel={closeModalChangeSelectConfirm}
-          footer={[
-            <Button
-              mergetype="primary"
-              key="submit"
-              onClick={() => handleDeleteRoom()}
-            >
-              Yes
-            </Button>,
-            <Button mergetype="primary" outlined key="back" onClick={closeModalChangeSelectConfirm}>
-              No
-            </Button>,
-          ]}
+          open={state.modalConfirmVisible}
+          // onCancel={closeModalConfirm}
+          footer={
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+              <Button mergetype="primary" outlined key="back" onClick={closeModalConfirm}>
+                {state.typeConfirm === 1 ? 'Cancel' : 'No'}
+              </Button>
+              ,
+              <Button
+                disabled={state.typeConfirm === 1 && (!numberInput || numberInput === '')}
+                loading={loading}
+                mergetype="primary"
+                key="submit"
+                onClick={onSubmit}
+              >
+                {state.typeConfirm === 1 ? 'Save' : 'Yes'}
+              </Button>
+              ,
+            </div>
+          }
         >
           <div style={{ justifyItems: 'center', display: 'grid', marginBottom: 20 }}>
             <Heading as="h4">
-              {state.typeConfirm == 1
-                ? 'Are you sure you want to change?'
-                : 'Are you sure you want to delete this item?'}
+              {state.typeConfirm === 1 ? 'Room Details' : 'Are you sure you want to delete the item?'}
             </Heading>
           </div>
+
+          <Form
+            hidden={state.typeConfirm === 1 ? false : true}
+            form={form1}
+            ref={formRef1}
+            name="ninjadash-vertical-form"
+            layout="vertical"
+          >
+            <Form.Item
+              name="Name"
+              label={
+                <span style={{ fontSize: 18, fontWeight: 600 }}>
+                  {' '}
+                  <span style={{ color: 'red' }}>*</span>Name
+                </span>
+              }
+              normalize={(value) => value.trimStart()}
+            >
+              <Input />
+            </Form.Item>
+            <Form.Item
+              name="Address"
+              label={
+                <span style={{ fontSize: 18, fontWeight: 600 }}>
+                  {' '}
+                  Address
+                </span>
+              }
+              normalize={(value) => value.trimStart()}
+            >
+              <Input />
+            </Form.Item>
+            <Form.Item
+              name="ManagerName"
+              label={
+                <span style={{ fontSize: 18, fontWeight: 600 }}>
+                  {' '}
+                  ManagerName
+                </span>
+              }
+              normalize={(value) => value.trimStart()}
+            >
+              <Input />
+            </Form.Item>
+          </Form>
         </Modal>
       </Main>
     </RoomMainLayout>

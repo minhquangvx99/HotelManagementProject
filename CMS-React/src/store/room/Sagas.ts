@@ -133,7 +133,6 @@ function* deleteRoom(action: DeleteRoomAction) {
     if (response.data) {
       openNotification('success', 'Success', 'Deleted successfully');
       yield put(deleteRoomSuccess());
-      yield put(fetchListRoomPaging(1, 10, 0, '', '', ''));
     } else {
       yield put(deleteRoomSetErr('Deleted failed'));
     }
