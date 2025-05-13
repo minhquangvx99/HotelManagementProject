@@ -97,17 +97,8 @@ const AccountInformation = React.memo<IAccountInformation>(({ type }) => {
                 <Form.Item name="role" initialValue={'1'}>
                   <div style={{ fontWeight: 'bold', fontSize: 18, color: '#000000' }}>Role</div>
                   <Row>
-                    <Col span={12}>
-                    <div
-                      style={{ border: '1px solid #ccc', paddingLeft: 20, paddingTop: 10, paddingBottom: 10, borderRadius: '4px', whiteSpace: 'nowrap', marginRight: 8}}
-                    >
-                      <Radio value="0" disabled={true}>
-                        Học viên
-                      </Radio>
-                    </div>
-                    </Col>
-                    <Col span={12}>
-                      <div style={{ border: '1px solid #ccc', padding: '10px 20px', borderRadius: '4px', marginLeft: 8 }}>
+                    <Col span={24}>
+                      <div style={{ border: '1px solid #ccc', padding: '10px 20px', borderRadius: '4px' }}>
                         <Radio value="1" checked={true}>
                           Admin
                         </Radio>
