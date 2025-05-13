@@ -153,12 +153,10 @@ const withAdminLayout = (WrappedComponent: FC<IWrappedComponent>) => {
       switch (location.pathname) {
         case '/admin/account':
           return 'Account';
-        case '/admin/topic':
-          return `Exam Management`;
+        case '/admin/room':
+          return `Room Management`;
         case '/admin/hotel':
           return 'Hotel Management';
-        case '/admin/topic/addTopic':
-          return `Exam Detail${getExamTypeCode() ? `: ${getExamTypeCode()}` : ''}`;
         default:
           return '';
       }
@@ -188,13 +186,6 @@ const withAdminLayout = (WrappedComponent: FC<IWrappedComponent>) => {
                       />
                     </Button>
                   ) : null}
-                  <Link
-                    className={`ninjadash-logo ${topMenu && window.innerWidth > 991 ? 'top-menu' : ''} link-transition ${state.collapsed ? 'collapsed' : ''}`}
-                    style={{ height: '100%' }}
-                    to="/main"
-                  >
-                    <img src={require(`../static/img/logo_dark.png`)} alt="" />
-                  </Link>
                 </div>
               </div>
               <div className="ninjadash-header-content__right d-flex">

@@ -14,7 +14,7 @@ import { Heading } from 'components/heading/Heading';
 import { themeColor } from 'config/theme/ThemeVariables';
 import React, { startTransition } from 'react';
 
-interface ISignIn {}
+interface ISignIn { }
 
 const SignIn: FC<ISignIn> = () => {
   const navigate = useNavigate();
@@ -56,28 +56,29 @@ const SignIn: FC<ISignIn> = () => {
       <Row justify="center">
         <Col span={18}>
           <AuthFormWrap>
+            <br /><br />
             <div className="ninjadash-authentication-top">
               <h1 className="ninjadash-authentication-top__title">Log in</h1>
             </div>
             <div className="ninjadash-authentication-content">
               <Form name="login" form={form} onFinish={handleSubmit} layout="vertical">
                 <Form.Item
-                
+
                   name="Username"
                   initialValue={!localStorage.getItem('Username') ? '' : localStorage.getItem('Username')}
-                  label={<span style={{fontWeight:"600"}}>Username</span>}
+                  label={<span style={{ fontWeight: "600" }}>Username</span>}
                 >
                   <Input placeholder="Enter your username" onKeyDown={handleKeyDown} />
                 </Form.Item>
                 <Form.Item
                   name="Password"
                   initialValue={!localStorage.getItem('Password') ? '' : localStorage.getItem('Password')}
-                  label={<span style={{fontWeight:"600"}}>Password</span>}
+                  label={<span style={{ fontWeight: "600" }}>Password</span>}
                   normalize={(value) => value.trim()}
                 >
-                  <Input.Password placeholder="Enter at least 8+ characters" onKeyDown={handleKeyDown} maxLength={20}/>
+                  <Input.Password placeholder="Enter at least 8+ characters" onKeyDown={handleKeyDown} maxLength={20} />
                 </Form.Item>
-                <div style={{display: "flex", justifyContent:"space-between"}} className="ninjadash-update auth-extra-links">
+                <div style={{ display: "flex", justifyContent: "space-between" }} className="ninjadash-update auth-extra-links">
                   <Checkbox onChange={onChange} checked={state.checked} style={{ fontWeight: '600' }}>
                     Remember me
                   </Checkbox>
