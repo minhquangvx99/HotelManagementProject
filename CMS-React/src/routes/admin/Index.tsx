@@ -11,10 +11,7 @@ import AccountRoute from './Account';
 import { Spin } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store/RootReducer';
-import { isSupported } from 'firebase/messaging';
-import { requestForToken } from 'config/FirebaseConfig';
 import {
-  addNotificationMessage,
   createNotificationToken,
   fetchListNotificationMessageByUserID,
 } from 'store/notification/Actions';
@@ -33,16 +30,6 @@ const Admin = React.memo<IAdmin>(() => {
 
   const dispatch = useDispatch<any>();
   const myInfo = useSelector((states: RootState) => states.auth.myInfo);
-
-  useEffect(() => {
-    // chỉ sử dụng được khi build với domain có HTTPS
-    (async () => {
-      const hasFirebaseMessagingSupport = await isSupported();
-      if (hasFirebaseMessagingSupport) {
-        await requestForToken(disPatchApi, myInfo, dispatchFetchListMessage);
-      }
-    })();
-  }, []);
 
   const disPatchApi = (obj: any) => {
     dispatch(createNotificationToken(obj));

@@ -30,9 +30,9 @@ namespace BusinessLogicLayer
             return _ctx.GetRoomDetailByRoomId(roomId);
         }
 
-        public IEnumerable<RoomGetModel> GetRoomPaging(int hotelId, string codeSearch, string name, string status, int pageIndex, int pageSize, string searchKey, ref int totalRow)
+        public IEnumerable<RoomGetModel> GetRoomPaging(int hotelId, string codeSearch, string type, string status, int pageIndex, int pageSize, ref int totalRow)
         {
-            return _ctx.GetRoomPaging(hotelId, codeSearch, name, status, pageIndex, pageSize, searchKey, ref totalRow);
+            return _ctx.GetRoomPaging(hotelId, codeSearch, type, status, pageIndex, pageSize, ref totalRow);
         }
 
     }

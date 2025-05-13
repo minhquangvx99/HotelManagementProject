@@ -7,6 +7,7 @@ using BusinessLogicLayer.Interfaces.IRooms;
 using API.Models.Hotel;
 using Entities.Hotel;
 using BusinessLogicLayer.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers
 {
@@ -24,6 +25,7 @@ namespace API.Controllers
             _userBS = userBS;
         }
 
+        [AllowAnonymous]
         [Route("getHotelPaging")]
         [HttpGet]
         public IActionResult GetHotelPaging(int pageIndex = 1, int pageSize = 1, string searchKey = "")
@@ -31,19 +33,7 @@ namespace API.Controllers
             try
             {
                 int totalRow = 0;
-                var listHotel = new List<HotelGetFullModel>();
-                var listHotelRaw = _hotelBS.GetHotelPaging(pageIndex, pageSize, searchKey, ref totalRow);
-                foreach (var tots in listHotelRaw)
-                {
-                    var hotelModel = new HotelGetFullModel()
-                    {
-                        Id = tots.ID,
-                        Name = tots.Name,
-                    };
-                    var listRoom = _roomBS.GetRoomByHotelId(tots.ID);
-                    hotelModel.rooms = listRoom.ToList();
-                    listHotel.Add(hotelModel);
-                }
+                var listHotel = _hotelBS.GetHotelPaging(pageIndex, pageSize, searchKey, ref totalRow);
                 return ReturnSuccess(new { listHotel, pageIndex, pageSize, totalRow });
             }
             catch (Exception ex)
@@ -52,25 +42,14 @@ namespace API.Controllers
             }
         }
 
+        [AllowAnonymous]
         [Route("getAllHotel")]
         [HttpGet]
         public IActionResult GetAllHotel()
         {
             try
             {
-                var listHotel = new List<HotelGetFullModel>();
-                var listHotelRaw = _hotelBS.GetAll();
-                foreach (var hotel in listHotelRaw)
-                {
-                    var hotelModel = new HotelGetFullModel()
-                    {
-                        Id = hotel.ID,
-                        Name = hotel.Name,
-                    };
-                    var listRoom = _roomBS.GetRoomByHotelId(hotel.ID);
-                    hotelModel.rooms = listRoom.ToList();
-                    listHotel.Add(hotelModel);
-                }
+                var listHotel = _hotelBS.GetAll();
                 return ReturnSuccess(new { listHotel });
             }
             catch (Exception ex)
@@ -79,23 +58,15 @@ namespace API.Controllers
             }
         }
 
-
-        [Route("getHotelByID/{hotelID}")]
+        [AllowAnonymous]
+        [Route("getHotelById/{hotelId}")]
         [HttpGet]
         public IActionResult GetHotelByID(int hotelId)
         {
             try
             {
                 var hotel = _hotelBS.GetById(hotelId);
-                var hotelModel = new HotelGetFullModel()
-                {
-                    Id = hotel.ID,
-                    Name = hotel.Name,
-                };
-                var listRoom = _roomBS.GetRoomByHotelId(hotelId);
-                hotelModel.rooms = listRoom.ToList();
-
-                return ReturnSuccess(hotelModel);
+                return ReturnSuccess(hotel);
             }
             catch (Exception ex)
             {
@@ -103,23 +74,29 @@ namespace API.Controllers
             }
         }
 
+        [AllowAnonymous]
         [Route("create")]
         [HttpPost]
         public IActionResult Create(HotelCreateModel hotelCreateModel)
         {
             try
             {
-                var typeOfRoomEntity = new HotelEntity()
+                var hotelEntity = new HotelEntity()
                 {
                     Name = hotelCreateModel.Name,
+                    Address = hotelCreateModel.Address,
+                    PhoneNumber = hotelCreateModel.PhoneNumber,
+                    StarsNumber = hotelCreateModel.StarsNumber,
+                    ManagerName = hotelCreateModel.ManagerName,
                     CreatedDate = DateTime.Now,
+                    ModifiedDate = DateTime.Now,
                 };
 
-                HotelEntity existed = _hotelBS.GetHotelByName(hotelCreateModel.Name.ToLower());
-                if (existed != null) return ReturnError("Name " + hotelCreateModel.Name + " existed");
+/*                HotelEntity existed = _hotelBS.GetHotelByName(hotelCreateModel.Name.ToLower());
+                if (existed != null) return ReturnError("Name " + hotelCreateModel.Name + " existed");*/
 
-                HotelEntity rs = _hotelBS.Insert(typeOfRoomEntity);
-                if (rs == null) return ReturnError("Add new Type Of Topic Set failed");
+                HotelEntity rs = _hotelBS.Insert(hotelEntity);
+                if (rs == null) return ReturnError("Add new Hotel failed");
 
                 return ReturnSuccess(new { }, "Saved successfully");
             }
@@ -129,6 +106,7 @@ namespace API.Controllers
             }
         }
 
+        [AllowAnonymous]
         [Route("delete")]
         [HttpPost]
         public IActionResult Delete(int hotelId)
@@ -136,21 +114,9 @@ namespace API.Controllers
             try
             {
                 var hotel = _hotelBS.GetById(hotelId);
-                if (hotel == null) return ReturnError("Type Of Topic Set does not exist");
-
-                var typeOfRoomEntity = new HotelEntity()
-                {
-                    ID = hotelId
-                };
-
-                var listRoom = _roomBS.GetRoomByHotelId(hotelId);
-                if (listRoom != null && listRoom.Count() > 0)
-                {
-                    return ReturnError("Can not delete Type Of Topic Set that have Topic Sets");
-                }
-
-                bool rs = _hotelBS.Delete(typeOfRoomEntity);
-                if (rs == false) return ReturnError("Delete Type Of Topic Set failed");
+                if (hotel == null) return ReturnError("Hotel does not exist");
+                bool rs = _hotelBS.Delete(hotel);
+                if (rs == false) return ReturnError("Delete Hotel failed");
 
                 return ReturnSuccess(new { }, "Deleted successfully");               
             }
@@ -160,6 +126,7 @@ namespace API.Controllers
             }
         }
 
+        [AllowAnonymous]
         [Route("update")]
         [HttpPost]
         public IActionResult Update(HotelUpdateModel hotelUpdateModel)
@@ -167,27 +134,25 @@ namespace API.Controllers
             try
             {
                 var hotel = _hotelBS.GetById(hotelUpdateModel.hotel.ID);
-                if (hotel == null) return ReturnError("Type Of Topic Set does not exist");
+                if (hotel == null) return ReturnError("Hotel does not exist");
 
                 hotel.ID = hotelUpdateModel.hotel.ID;
                 hotel.Name = hotelUpdateModel.hotel.Name;
+                hotel.Address = hotelUpdateModel.hotel.Address;
+                hotel.PhoneNumber = hotelUpdateModel.hotel.PhoneNumber;
+                hotel.StarsNumber = hotelUpdateModel.hotel.StarsNumber;
+                hotel.ManagerName = hotelUpdateModel.hotel.ManagerName;
                 hotel.ModifiedDate = DateTime.Now;
 
-                var listRoom = _roomBS.GetRoomByHotelId(hotelUpdateModel.hotel.ID);
-                if (listRoom != null && listRoom.Count() > 0)
-                {
-                    return ReturnError("Can not update Type Of Topic Set that have Topic Sets");
-                }
-
-                // check tên đã tồn tại
+/*                // check tên đã tồn tại
                 if (hotel.Name.ToLower() != hotelUpdateModel.hotel.Name.ToLower())
                 {
                     HotelEntity existed = _hotelBS.GetHotelByName(hotelUpdateModel.hotel.Name.ToLower());
                     if (existed != null) return ReturnError("Name " + hotelUpdateModel.hotel.Name + " existed");
-                }
+                }*/
 
                 bool rs = _hotelBS.Update(hotel);
-                if (rs == false) return ReturnError("Update Type Of Topic Set failed");
+                if (rs == false) return ReturnError("Update Hotel failed");
 
                 return ReturnSuccess(new { }, "Saved successfully");       
             }

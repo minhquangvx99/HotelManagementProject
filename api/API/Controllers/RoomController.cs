@@ -6,7 +6,6 @@ using System;
 using System.Linq;
 using Entities.Room;
 using API.Models.Room;
-using BusinessLogicLayer.Interfaces;
 
 namespace API.Controllers
 {
@@ -15,23 +14,21 @@ namespace API.Controllers
     public class RoomController : BaseController
     {
         private readonly IRoomBS _roomBS;
-        private readonly IUserBS _userBS;
 
-        public RoomController(IUserBS userBS,IRoomBS roomBS)
+        public RoomController(IRoomBS roomBS)
         {
             _roomBS = roomBS;
-            _userBS = userBS;
         }
 
+        [AllowAnonymous]
         [Route("getRoomFullPaging")]
         [HttpGet]
-        [AllowAnonymous]
-        public async Task<IActionResult> GetRoomPaging(int hotelId , string codeSearch = "", string name = "", string status ="", int pageIndex = 1, int pageSize = 1, string searchKey = "")
+        public async Task<IActionResult> GetRoomPaging(int hotelId , string codeSearch = "", string type = "", string status ="", int pageIndex = 1, int pageSize = 1)
         {
             int totalRow = 0;
             try
             {
-                var ListRoom = _roomBS.GetRoomPaging(hotelId, codeSearch,name,status, pageIndex, pageSize, searchKey, ref totalRow).ToList();
+                var ListRoom = _roomBS.GetRoomPaging(hotelId, codeSearch, type, status, pageIndex, pageSize, ref totalRow).ToList();
                 return ReturnSuccess(new { ListRoom, totalRow });
             }
             catch (Exception ex)
@@ -40,9 +37,9 @@ namespace API.Controllers
             }
         }
 
+        [AllowAnonymous]
         [Route("getRoomDetail")]
         [HttpGet]
-        [AllowAnonymous]
         public async Task<IActionResult> GetRoomDetail(int roomId)
         {
             try
@@ -57,23 +54,23 @@ namespace API.Controllers
             }
         }
 
+        [AllowAnonymous]
         [Route("createRoom")]
         [HttpPost]
-        [AllowAnonymous]
         public async Task<IActionResult> CreateRoom(RoomCreateModel roomCreateModel)
         {
             try
             {
-                var checkNameTopic = _roomBS.GetRoomByName(roomCreateModel.Name);
-                if (checkNameTopic.Count() > 0)
-                {
-                    return ReturnError("Name already exists");
-                }
                 RoomEntity roomsEntity = new RoomEntity()
                 {
+                    Number = roomCreateModel.Number,
+                    Type = roomCreateModel.Type,
+                    Price = roomCreateModel.Price,
+                    HotelId = roomCreateModel.HotelId,
                     Status = roomCreateModel.Status,
-                    CreatedDate = DateTime.Now
-                };
+                    CreatedDate = DateTime.Now,
+                    ModifiedDate = DateTime.Now,
+            };
                 RoomEntity rs = _roomBS.Insert(roomsEntity);
                 if(rs == null) return ReturnError("Can not create room");
                 return ReturnSuccess("Create Room Successfully");
@@ -86,17 +83,22 @@ namespace API.Controllers
 
         [Route("updateRoom")]
         [HttpPut]
-       
+        [AllowAnonymous]
         public async Task<IActionResult> UpdateRoom(RoomUpdateModel roomUpdateModel)
         {
             try
             {
-                var roomByID = _roomBS.GetById(roomUpdateModel.RoomId);
+                var roomByID = _roomBS.GetById(roomUpdateModel.ID);
                 if (roomByID == null)
                 {
                     return ReturnError("Can not find room");
                 }
+                roomByID.Type = roomUpdateModel.Type;
+                roomByID.Number = roomUpdateModel.Number;
+                roomByID.Price = roomUpdateModel.Price;
+                roomByID.HotelId = roomUpdateModel.HotelId;
                 roomByID.Status = roomUpdateModel.Status;
+                roomByID.ModifiedDate = DateTime.Now;
                 bool rs = _roomBS.Update(roomByID);
                 if (!rs) ReturnError("Can not update room");
                 return ReturnSuccess(rs);
@@ -107,33 +109,9 @@ namespace API.Controllers
             }
         }
 
-        [Route("updateStatusOfRoom")]
-        [HttpPut]
-        
-        public async Task<IActionResult> UpdateStatusOfRoom(int roomID, int roomStatus)
-        {
-            try
-            {
-                var roomByID = _roomBS.GetById(roomID);
-                if (roomByID == null)
-                {
-                    return ReturnError("Can not find room");
-                }
-                roomByID.Status = roomStatus;
-                roomByID.CreatedDate = DateTime.Now;
-                bool rs = _roomBS.Update(roomByID);
-                if(!rs) ReturnError("Can not update room");
-                return ReturnSuccess(rs);
-            }
-            catch (Exception ex)
-            {
-                return ReturnError(ex);
-            }
-        }
-
         [Route("delete")]
         [HttpDelete]
-     
+        [AllowAnonymous]
         public async Task<IActionResult> Delete(int roomID)
         {
             try

@@ -1,9 +1,6 @@
-﻿using Dapper;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Entities.Hotel;
-using Services.Hotels;
 
 namespace Services.Hotels
 {
@@ -27,19 +24,19 @@ namespace Services.Hotels
         public IEnumerable<HotelEntity> GetHotelPaging(int pageIndex, int pageSize, string searchKey, ref int totalRow)
         {
             var parameters = new { Offset = (pageIndex - 1) * pageSize, PageSize = pageSize, SearchKey = searchKey };
-            var sqlCount = "SELECT r.* FROM Hotel r " +
-                        "WHERE r.NumberOfQuestion LIKE '%'+@SearchKey+'%' OR r.SetUpTime LIKE '%'+@SearchKey+'%' OR r.Name LIKE '%'+@SearchKey+'%'";
+            var sqlCount = "SELECT h.* FROM Hotel h " +
+                        "WHERE h.Name LIKE '%'+@SearchKey+'%' OR h.Address LIKE '%'+@SearchKey+'%' OR CAST(h.StarsNumber AS VARCHAR) + ' sao' LIKE '%'+@SearchKey+'%' OR h.PhoneNumber LIKE '%'+@SearchKey+'%' ";
             totalRow = unitOfWork.Query<HotelEntity>(sqlCount, parameters).ToList().Count();
-            var sql = "SELECT r.* FROM Hotel r " +
-                        "WHERE r.NumberOfQuestion LIKE '%'+@SearchKey+'%' OR r.SetUpTime LIKE '%'+@SearchKey+'%' OR r.Name LIKE '%'+@SearchKey+'%' " +
-                        "ORDER BY r.ModifiedDate DESC OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY;";
+            var sql = "SELECT h.* FROM Hotel h " +
+                        "WHERE h.Name LIKE '%'+@SearchKey+'%' OR h.Address LIKE '%'+@SearchKey+'%' OR  CAST(h.StarsNumber AS VARCHAR) + ' sao' LIKE '%'+@SearchKey+'%' OR h.PhoneNumber LIKE '%'+@SearchKey+'%' " +
+                        "ORDER BY h.ModifiedDate DESC OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY;";
             return unitOfWork.Query<HotelEntity>(sql, parameters).ToList();
         }
 
         public HotelEntity GetHotelByName(string name)
         {
             var parameters = new { Name = name };
-            var sql = "SELECT * FROM Hotel r WHERE LOWER(r.Name) = @Name";
+            var sql = "SELECT * FROM Hotel h WHERE LOWER(h.Name) = @Name";
             return unitOfWork.Query<HotelEntity>(sql, parameters).FirstOrDefault();
         }
     }
