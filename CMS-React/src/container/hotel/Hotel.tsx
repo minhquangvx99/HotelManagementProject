@@ -129,6 +129,7 @@ const Hoteles: FC<IHotel> = (props) => {
         return <div style={{ fontWeight: 550, textAlign: 'center' }}>Name</div>;
       },
       dataIndex: 'Name',
+      align: 'center' as const,
       key: 'Name',
       width: '85vw',
     },
@@ -137,6 +138,7 @@ const Hoteles: FC<IHotel> = (props) => {
         return <div style={{ fontWeight: 550, textAlign: 'center' }}>Address</div>;
       },
       dataIndex: 'Address',
+      align: 'center' as const,
       key: 'Address',
       width: '85vw',
     },
@@ -145,6 +147,7 @@ const Hoteles: FC<IHotel> = (props) => {
         return <div style={{ fontWeight: 550, textAlign: 'center' }}>PhoneNumber</div>;
       },
       dataIndex: 'PhoneNumber',
+      align: 'center' as const,
       key: 'PhoneNumber',
       width: '85vw',
     },
@@ -153,6 +156,7 @@ const Hoteles: FC<IHotel> = (props) => {
         return <div style={{ fontWeight: 550, textAlign: 'center' }}>StarsNumber</div>;
       },
       dataIndex: 'StarsNumber',
+      align: 'center' as const,
       key: 'StarsNumber',
       width: '85vw',
     },
@@ -161,6 +165,7 @@ const Hoteles: FC<IHotel> = (props) => {
         return <div style={{ fontWeight: 550, textAlign: 'center' }}>ManagerName</div>;
       },
       dataIndex: 'ManagerName',
+      align: 'center' as const,
       key: 'ManagerName',
       width: '85vw',
     },
@@ -169,6 +174,7 @@ const Hoteles: FC<IHotel> = (props) => {
         return <div style={{ fontWeight: 550, textAlign: 'center' }}>CreatedDate</div>;
       },
       dataIndex: 'CreatedDate',
+      align: 'center' as const,
       key: 'CreatedDate',
       width: '85vw',
     },
@@ -215,26 +221,10 @@ const Hoteles: FC<IHotel> = (props) => {
         </Tooltip>
       ),
       PhoneNumber: (
-        <Tooltip
-          title={<pre className="custom-pre">{PhoneNumber}</pre>}
-          placement="bottom"
-          overlayStyle={{ maxWidth: '100%' }}
-          style={{ display: 'block', maxWidth: '100%' }}
-          overlayInnerStyle={{ background: '#000' }}
-        >
-          <pre className="custom-pre">{PhoneNumber}</pre>
-        </Tooltip>
+        <pre className="custom-pre">{PhoneNumber}</pre>
       ),
       StarsNumber: (
-        <Tooltip
-          title={<pre className="custom-pre">{StarsNumber}</pre>}
-          placement="bottom"
-          overlayStyle={{ maxWidth: '100%' }}
-          style={{ display: 'block', maxWidth: '100%' }}
-          overlayInnerStyle={{ background: '#000' }}
-        >
-          <pre className="custom-pre">{StarsNumber} sao</pre>
-        </Tooltip>
+        <pre className="custom-pre">{StarsNumber} sao</pre>
       ),
       ManagerName: (
         <Tooltip
@@ -248,15 +238,7 @@ const Hoteles: FC<IHotel> = (props) => {
         </Tooltip>
       ),
       CreatedDate: (
-        <Tooltip
-          title={<pre className="custom-pre">{moment(CreatedDate).format('HH:mm DD-MM-YYYY')}</pre>}
-          placement="bottom"
-          overlayStyle={{ maxWidth: '100%' }}
-          style={{ display: 'block', maxWidth: '100%' }}
-          overlayInnerStyle={{ background: '#000' }}
-        >
-          <pre className="custom-pre">{moment(CreatedDate).format('HH:mm DD-MM-YYYY')}</pre>
-        </Tooltip>
+        <pre className="custom-pre">{moment(CreatedDate).format('HH:mm DD-MM-YYYY')}</pre>
       ),
       action1: (
         <div className="table-actions">
@@ -502,7 +484,7 @@ const Hoteles: FC<IHotel> = (props) => {
             }
             normalize={(value) => value.trimStart()}
           >
-            <Input onChange={handleChangeStarsNumber} maxLength={1}/>
+            <Input onChange={handleChangeStarsNumber} maxLength={1} />
           </Form.Item>
           <Form.Item
             name="ManagerName"

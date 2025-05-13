@@ -3,7 +3,7 @@ import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import withAdminLayout from 'layout/withAdminLayout';
 import React from 'react';
 import HotelRoute from './Hotel';
-// import TopicRoute from './Topic';
+import RoomRoute from './Room';
 import AccountRoute from './Account';
 import { Spin } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
@@ -34,7 +34,7 @@ const Admin = React.memo<IAdmin>(() => {
       <Routes>
         <Route path="*" element={<Navigate to="hotel" replace />} />
         <Route index path="hotel/*" element={<HotelRoute />} />
-        {/* <Route path="topic/*" element={<TopicRoute />} /> */}
+        <Route path="room/*" element={<RoomRoute />} />
         <Route path="account/*" element={<AccountRoute />} />
         <Route path="*" element={<NotFound />} />
       </Routes>

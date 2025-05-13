@@ -50,7 +50,7 @@ function* fetchListHotelAllSaga(action: FetchListHotelAllAction) {
     );
 
     if (response.data && response.data.Success) {
-      yield put(fetchListHotelAllSuccess(response.data.Data));
+      yield put(fetchListHotelAllSuccess(response.data.Data.listHotel));
     } else {
       yield put(fetchListHotelAllErr('Get List Hotel For Select Failed'));
       openNotification('error', '', 'Get List Hotel For Select Failed')

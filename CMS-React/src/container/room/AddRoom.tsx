@@ -17,7 +17,7 @@
 // import { Button } from 'components/buttons/Buttons';
 // import { Cards } from 'components/cards/frame/CardsFrame';
 // import { Main, TableWrapper } from 'container/Style';
-// import { StyledAddTopic } from 'container/topic/Style';
+// import { StyledAddTopic } from 'container/room/Style';
 // import { FC, ReactNode, Suspense, useEffect, useMemo, useRef, useState } from 'react';
 // import { useDispatch, useSelector } from 'react-redux';
 // import { RootState } from 'store/RootReducer';
@@ -33,10 +33,10 @@
 //   fetchDetailsTopicSet,
 //   fetchListQuestionInTopicSetByExamTypeID,
 //   updateTopicSet,
-// } from 'store/topic-set/Actions';
+// } from 'store/room/Actions';
 // import { openNotification } from 'utility/Utility';
 // import { CheckboxChangeEvent } from 'antd/lib/checkbox';
-// import { QuestionsInTopicSetByExamtypeIDModel } from 'store/topic-set/Types';
+// import { QuestionsInTopicSetByExamtypeIDModel } from 'store/room/Types';
 // import QuestionFilter from 'container/question/QuestionFilter';
 // import { Tab } from 'components/tabs/Tabs';
 // import { QuestionApiModel, QuestionModel } from 'store/question/Types';
@@ -52,44 +52,12 @@
 //   SetCompositeQuestionDetail,
 //   SetQuestionAdd,
 // } from 'store/question/Actions';
-// import ExamType from 'container/category/exam-type/ExamType';
 // import QuestionFilterTopic from './QuestionFilterTopic';
 // import { fetchListKAAll } from 'store/ka/Actions';
 // import { fetchListBatchID } from 'store/batch/Action';
 // import { check } from 'prettier';
 // const { TextArea } = Input;
 
-// interface IQuestionTableData {
-//   IsCheck?: boolean;
-//   Code?: string | ReactNode;
-//   Task?: string;
-//   KACode?: string;
-//   Demo?: string;
-//   Obligatory?: boolean;
-//   CodeShow?: ReactNode;
-//   IsCheckShow?: ReactNode;
-//   ObligatoryShow?: ReactNode;
-//   totalRow?: number;
-//   action3?: ReactNode;
-// }
-
-// interface CompositeQuestionModel {
-//   ID?: number;
-//   ExamtypeCode: string;
-//   CompositeQuestionID: number;
-//   ExamTypeID: number;
-//   ExamTypeCode: string;
-//   Question: string;
-//   CQStatus: number;
-//   CodeSearch: string;
-//   TaskName: string;
-//   totalRow: number;
-//   Obligatory?: boolean;
-//   Status: number;
-//   BatchID: number;
-//   BatchCode: string;
-//   questions: QuestionModel[] | [];
-// }
 // interface IAddTopic {}
 
 // const AddTopic: FC<IAddTopic> = (props) => {
@@ -109,10 +77,8 @@
 //   const [form] = Form.useForm();
 //   const formRef = useRef<FormInstance<any>>(null);
 //   const statusInput = Form.useWatch('Status', form);
-//   // const examTypeInput = Form.useWatch('ExamType', form);
 //   const typeOfTopicSetInput = Form.useWatch('TypeOfTopicSet', form);
 //   const nameInput = Form.useWatch('Name', form);
-//   const numberOfQuestionInput = Form.useWatch('NumberOfQuestion', form);
 //   const fileInputRef = useRef<HTMLInputElement | null>(null);
 //   const myInfo = useSelector((states: RootState) => states.auth.myInfo);
 //   const topicSetForEdit = useSelector((states: RootState) => states.topicSet.topicSetForEdit);

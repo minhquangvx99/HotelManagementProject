@@ -32,7 +32,7 @@ export const FilterContainer = styled.div`
     left: 10px;
   }
 `;
-export const TopicMainLayout = styled.div`
+export const RoomMainLayout = styled.div`
   .ant-select-single:not(.ant-select-customize-input) .ant-select-selector {
     height: auto;
     padding: 3px 10px !important;
@@ -109,7 +109,7 @@ export const TopicMainLayout = styled.div`
     width: 120px !important;
   } */
 `;
-export const StyledAddTopic = styled.div`
+export const StyledAddRoom = styled.div`
   .statusStyleActive {
     width: 100% !important;
     .ant-select-selector {
@@ -223,7 +223,7 @@ export const StyledAddTopic = styled.div`
     left: 15px;
   }
 `;
-export const StyledFilterTopic = styled.div`
+export const StyledFilterRoom = styled.div`
   .ant-card-body {
     padding: 10px 25px !important;
   }
