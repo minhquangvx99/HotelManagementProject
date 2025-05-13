@@ -54,6 +54,7 @@ const Room: FC<IRoom> = (props) => {
   const [form] = Form.useForm();
   const [form1] = Form.useForm();
   const numberInput = Form.useWatch('Number', form1);
+  const hotelIdInput = Form.useWatch('HotelId', form1);
   const statusShow = [
     { value: 0, label: 'Chưa cho thuê' },
     { value: 1, label: 'Đã cho thuê' },
@@ -229,14 +230,6 @@ const Room: FC<IRoom> = (props) => {
       align: 'center' as const,
     },
   ];
-
-  const handleEdit = async (roomID: number) => {
-
-  };
-
-  const handleAdd = () => {
-
-  };
 
   const handleSearch = () => {
     if (state.page === 1) {
@@ -537,7 +530,7 @@ const Room: FC<IRoom> = (props) => {
                               {/* <Input placeholder="Filter by L1 (Subject)" size="small"></Input> */}
                               <Select
                                 showArrow={true}
-                                placeholder="Filter by Type of Exam"
+                                placeholder="Filter by Hotel"
                                 showSearch
                                 filterOption={(input, option) =>
                                   (option?.label?.toString() ?? '').toLowerCase().includes(input.toLowerCase().trim())
@@ -667,15 +660,18 @@ const Room: FC<IRoom> = (props) => {
                 {state.typeConfirm === 1 ? 'Cancel' : 'No'}
               </Button>
               ,
-              <Button
-                disabled={state.typeConfirm === 1 && (!numberInput || numberInput === '')}
+                <Button
+                disabled={
+                  state.typeConfirm === 1 &&
+                  (!numberInput || numberInput === '' || !hotelIdInput || hotelIdInput === 0)
+                }
                 loading={loading}
                 mergetype="primary"
                 key="submit"
                 onClick={onSubmit}
-              >
+                >
                 {state.typeConfirm === 1 ? 'Save' : 'Yes'}
-              </Button>
+                </Button>
               ,
             </div>
           }
@@ -686,20 +682,20 @@ const Room: FC<IRoom> = (props) => {
             </Heading>
           </div>
 
-            <Form
+          <Form
             hidden={state.typeConfirm === 1 ? false : true}
             form={form1}
             ref={formRef1}
             name="ninjadash-vertical-form"
             layout="vertical"
-            >
+          >
             <Form.Item
               name="Number"
               label={
-              <span style={{ fontSize: 18, fontWeight: 600 }}>
-                {' '}
-                <span style={{ color: 'red' }}>*</span>Number
-              </span>
+                <span style={{ fontSize: 18, fontWeight: 600 }}>
+                  {' '}
+                  <span style={{ color: 'red' }}>*</span>Number
+                </span>
               }
               normalize={(value) => value.trimStart()}
             >
@@ -708,10 +704,10 @@ const Room: FC<IRoom> = (props) => {
             <Form.Item
               name="Type"
               label={
-              <span style={{ fontSize: 18, fontWeight: 600 }}>
-                {' '}
-                Type
-              </span>
+                <span style={{ fontSize: 18, fontWeight: 600 }}>
+                  {' '}
+                  Type
+                </span>
               }
               normalize={(value) => value.trimStart()}
             >
@@ -720,10 +716,10 @@ const Room: FC<IRoom> = (props) => {
             <Form.Item
               name="Price"
               label={
-              <span style={{ fontSize: 18, fontWeight: 600 }}>
-                {' '}
-                Price
-              </span>
+                <span style={{ fontSize: 18, fontWeight: 600 }}>
+                  {' '}
+                  Price
+                </span>
               }
               normalize={(value) => value.trimStart()}
             >
@@ -732,31 +728,34 @@ const Room: FC<IRoom> = (props) => {
             <Form.Item
               name="HotelId"
               label={
-              <span style={{ fontSize: 18, fontWeight: 600 }}>
-                {' '}
-                HotelName
-              </span>
-              }
-              normalize={(value) => value.trimStart()}
-            >
-              <Input />
-            </Form.Item>
-            <Form.Item
-              name="Status"
-              label={
-              <span style={{ fontSize: 18, fontWeight: 600 }}>
-                {' '}
-                Status
-              </span>
+                <span style={{ fontSize: 18, fontWeight: 600 }}>
+                  {' '}
+                  <span style={{ color: 'red' }}>*</span>HotelName
+                </span>
               }
               normalize={(value) => value}
             >
               <Select
-              placeholder="Select Status"
-              options={statusShow}
+                placeholder="Select Hotel"
+                options={getListSelectHotel()}
               />
             </Form.Item>
-            </Form>
+            <Form.Item
+              name="Status"
+              label={
+                <span style={{ fontSize: 18, fontWeight: 600 }}>
+                  {' '}
+                  Status
+                </span>
+              }
+              normalize={(value) => value}
+            >
+              <Select
+                placeholder="Select Status"
+                options={statusShow}
+              />
+            </Form.Item>
+          </Form>
         </Modal>
       </Main>
     </RoomMainLayout >
