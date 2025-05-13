@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="Current">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <FileUpgradeFlags>40</FileUpgradeFlags>
+    <UpgradeBackupLocation>H:\Workspace\App\InvoiceAds\git\Backup\BusinessLogicLayer\</UpgradeBackupLocation>
+    <OldToolsVersion>2.0</OldToolsVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Entities\Entities.csproj" />
+    <ProjectReference Include="..\Services\Services.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Interfaces\IExamTypes\" />
+    <None Remove="ExamTypes\" />
+    <None Remove="Interfaces\ITasks\" />
+    <None Remove="Tasks\" />
+    <None Remove="Interfaces\IKAs\" />
+    <None Remove="KAs\" />
+    <None Remove="TypeOfTopicSets\" />
+    <None Remove="Interfaces\ITypeOfTopicSets\" />
+    <None Remove="Interfaces\IResultOfKAs\" />
+    <None Remove="ResultOfKAs\" />
+    <None Remove="Interfaces\TopicSets\" />
+    <None Remove="TopicSets\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Json.Net" Version="1.0.33" />
+  </ItemGroup>
+</Project>
