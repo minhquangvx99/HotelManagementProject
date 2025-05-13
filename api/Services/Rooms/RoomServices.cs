@@ -5,6 +5,8 @@ using Entities.Room;
 using Entities.Hotel;
 using Services.Hotels;
 using System.Text.RegularExpressions;
+using Dapper;
+using System.Data;
 
 namespace Services.Rooms
 {
@@ -43,65 +45,23 @@ namespace Services.Rooms
             return unitOfWork.Query<RoomDetailModel>(sql, parameters).FirstOrDefault();
         }
 
-        public IEnumerable<RoomGetModel> GetRoomPaging(int typeOfRoomsID, string codeSearch, string type, string status, int pageIndex, int pageSize, ref int totalRow)
+        public IEnumerable<RoomGetModel> GetRoomPaging(
+           int typeOfRoomsID, string codeSearch, string type, string status,
+           int pageIndex, int pageSize, ref int totalRow)
         {
-            var parameters = new
+            var parameters = new DynamicParameters();
+            parameters.Add("HotelId", typeOfRoomsID);
+            parameters.Add("CodeSearch", $"%{codeSearch}%");
+            parameters.Add("Type", $"%{type}%");
+            parameters.Add("Status", $"%{status}%");
+            parameters.Add("Offset", (pageIndex - 1) * pageSize);
+            parameters.Add("PageSize", pageSize);
+
+            using (var multi = unitOfWork.ProcedureQueryMulti("GetRoomPaging", parameters))
             {
-                Offset = (pageIndex - 1) * pageSize,
-                PageSize = pageSize,
-                HotelId = typeOfRoomsID,
-                CodeSearch = "%" + codeSearch + "%",
-                Type = "%" + type + "%",
-                Status = "%" + status + "%"
-            };
-
-            var sqlCount = @"
-                        SELECT Count(*)
-                        FROM (
-                            SELECT 
-                                r.ID as ID,
-                                'KS' + CAST(h.ID AS VARCHAR) + '-' + r.Number as Code,
-                                r.Number,
-                                r.Type,
-                                r.Price,
-                                r.Status,
-		                        h.Name as HotelName,
-                                r.CreatedDate as CreatedDate,
-                                r.HotelId
-                            FROM Room r
-                            LEFT JOIN Hotel h on r.HotelId = h.ID
-                        ) AS subquery
-                        WHERE   
-                            (@HotelId = 0 OR HotelId = @HotelId) AND
-                            (@CodeSearch = '%%' OR Code LIKE @CodeSearch) AND
-                            (@Type = '%%' OR Type LIKE @Type) AND
-                            (@Status = '%%' OR CAST(Status AS VARCHAR) LIKE @Status)";
-            totalRow = unitOfWork.Query<int>(sqlCount, parameters).FirstOrDefault();
-
-            var sql = @"
-                        SELECT *
-                        FROM (
-                            SELECT 
-                                r.ID as ID,
-                                'KS' + CAST(h.ID AS VARCHAR) + '-' + r.Number as Code,
-                                r.Number,
-                                r.Type,
-                                r.Price,
-                                r.Status,
-		                        h.Name as HotelName,
-                                r.CreatedDate as CreatedDate,
-                                r.HotelId
-                            FROM Room r
-                            LEFT JOIN Hotel h on r.HotelId = h.ID
-                        ) AS subquery
-                        WHERE   
-                            (@HotelId = 0 OR HotelId = @HotelId) AND
-                            (@CodeSearch = '%%' OR Code LIKE @CodeSearch) AND
-                            (@Type = '%%' OR Type LIKE @Type) AND
-                            (@Status = '%%' OR CAST(Status AS VARCHAR) LIKE @Status)
-                        ORDER BY CreatedDate DESC
-                        OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY;";
-            return unitOfWork.Query<RoomGetModel>(sql, parameters).ToList();
+                totalRow = multi.Read<int>().FirstOrDefault();
+                return multi.Read<RoomGetModel>().ToList();
+            }
         }
 
     }

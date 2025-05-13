@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Data;
 using System.Linq;
+using Dapper;
 using Entities.Hotel;
 
 namespace Services.Hotels
@@ -23,14 +25,16 @@ namespace Services.Hotels
 
         public IEnumerable<HotelEntity> GetHotelPaging(int pageIndex, int pageSize, string searchKey, ref int totalRow)
         {
-            var parameters = new { Offset = (pageIndex - 1) * pageSize, PageSize = pageSize, SearchKey = searchKey };
-            var sqlCount = "SELECT h.* FROM Hotel h " +
-                        "WHERE h.Name LIKE '%'+@SearchKey+'%' OR h.Address LIKE '%'+@SearchKey+'%' OR CAST(h.StarsNumber AS VARCHAR) + ' sao' LIKE '%'+@SearchKey+'%' OR 'KS' + CAST(h.ID AS VARCHAR) LIKE '%'+@SearchKey+'%' OR h.ManagerName LIKE '%'+@SearchKey+'%' OR h.PhoneNumber LIKE '%'+@SearchKey+'%' ";
-            totalRow = unitOfWork.Query<HotelEntity>(sqlCount, parameters).ToList().Count();
-            var sql = "SELECT h.* FROM Hotel h " +
-                        "WHERE h.Name LIKE '%'+@SearchKey+'%' OR h.Address LIKE '%'+@SearchKey+'%' OR CAST(h.StarsNumber AS VARCHAR) + ' sao' LIKE '%'+@SearchKey+'%' OR 'KS' + CAST(h.ID AS VARCHAR) LIKE '%'+@SearchKey+'%' OR h.ManagerName LIKE '%'+@SearchKey+'%'  OR h.PhoneNumber LIKE '%'+@SearchKey+'%' " +
-                        "ORDER BY h.ModifiedDate DESC OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY;";
-            return unitOfWork.Query<HotelEntity>(sql, parameters).ToList();
+            var parameters = new DynamicParameters();
+            parameters.Add("SearchKey", searchKey);
+            parameters.Add("Offset", (pageIndex - 1) * pageSize);
+            parameters.Add("PageSize", pageSize);
+
+            using (var multi = unitOfWork.ProcedureQueryMulti("GetHotelPaging", parameters))
+            {
+                totalRow = multi.Read<int>().FirstOrDefault(); // Lấy totalRow từ dòng đầu tiên
+                return multi.Read<HotelEntity>().ToList();     // Lấy danh sách hotel phân trang
+            }
         }
 
         public HotelEntity GetHotelByName(string name)
