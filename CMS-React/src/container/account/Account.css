@@ -1,0 +1,10 @@
+.ant-select-selector {
+    height: 50px !important;
+    width: 100% !important;
+}
+.ant-select-arrow {
+    top: 26% !important;
+}
+.ant-select-arrow svg {
+    fill: black !important;
+}

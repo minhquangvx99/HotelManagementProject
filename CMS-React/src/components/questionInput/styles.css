@@ -1,0 +1,32 @@
+/* styles.css */
+.editor-container {
+    max-height: 400px;
+    border: 1px solid #ccc; /* Optional: to see the boundaries of the container */
+  }
+  
+  .ck-editor__editable {
+    height: 300px;
+  }
+
+  .ck-editor__editable img {
+    max-width: 200px; /* Ensure images do not exceed 300px in width */
+    max-height: 300px; /* Ensure images do not exceed 500px in height */
+    width: auto; /* Maintain aspect ratio */
+    height: auto; /* Maintain aspect ratio */
+  }
+
+  .ck.ck-editor__editable > .ck-placeholder::before {
+    color: #C5BFC5;
+    font-family: Georgia;
+  }
+  /* .editor-container:hover {
+    border-color: #164D9E !important;
+  } */
+
+  
+  .highlight {
+    border-color: red !important;
+  }
+
+  
+  

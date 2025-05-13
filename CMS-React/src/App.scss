@@ -1,0 +1,61 @@
+.chartjs-tooltip {
+  opacity: 1;
+  position: absolute !important;
+  background: #fff;
+  box-shadow: 0 3px 16px #adb5d915;
+  padding: 8px 6px !important;
+  border-radius: 5px;
+  border: 1px solid #f1f2f6;
+  min-width: 80px;
+  transition: all 0.5s ease;
+  pointer-events: none;
+  transform: translate(-50%, 5%);
+  z-index: 222;
+  top: 0;
+  left: 0;
+  @media only screen and (max-width: 991px) {
+    transform: translate(-60%, 5%);
+  }
+  &:before {
+    position: absolute;
+    content: '';
+    border-top: 5px solid #eff0f3;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    bottom: -5px;
+    transform: translateX(-50%);
+  }
+}
+.chartjs-tooltip-key {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background: 'pink';
+  margin-right: 5px;
+}
+.tooltip-title {
+  color: #404040;
+  font-size: 12px;
+  line-height: 1;
+  font-weight: 500 !important;
+  font-family: 'Jost', sans-serif;
+  text-transform: capitalize;
+  margin-bottom: 4px;
+}
+.tooltip-value {
+  color: #63b963;
+  font-size: 22px;
+  font-weight: 600 !important;
+  font-family: 'Jost', sans-serif;
+}
+.tooltip-value sup {
+  font-size: 12px;
+  @media only screen and (max-width: 1199px) {
+    font-size: 11px;
+  }
+}
+
+
+.ant-table-cell {
+  padding: 10px 18px !important;
+}

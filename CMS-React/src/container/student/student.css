@@ -1,0 +1,142 @@
+.statusStyleActive {
+  .ant-select-selector {
+    height: auto;
+    width: auto;
+    background-color: #0075ff !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    text-align: center;
+
+    .ant-select-selection-item {
+      padding: 0px !important;
+    }
+  }
+  .ant-select-single:not(.ant-select-customize-input) .ant-select-selector {
+    height: auto;
+    width: auto; /* Assuming you want to keep the width and other styles */
+    background-color: #0075ff !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+  }
+  .ant-select-selection-item {
+    color: white !important;
+    font-weight: 550 !important;
+  }
+}
+.statusStyleBlocked {
+  .ant-select-selector {
+    height: auto;
+    width: auto;
+    background-color: #a52c2c !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    .ant-select-selection-item {
+      padding: 0px !important;
+    }
+  }
+  .ant-select-selection-item {
+    color: white !important;
+    font-weight: 550 !important;
+  }
+}
+
+.statusStyleRefuse {
+  .ant-select-selector {
+    height: auto;
+    width: auto;
+    background-color: #f29129 !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    .ant-select-selection-item {
+      padding: 0px !important;
+    }
+  }
+  .ant-select-selection-item {
+    color: black !important;
+    font-weight: 550 !important;
+  }
+}
+.statusStyleInactive {
+  .ant-select-selector {
+    height: auto;
+    width: auto;
+    background-color: #818181 !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    .ant-select-selection-item {
+      padding: 0px !important;
+    }
+  }
+  .ant-select-single:not(.ant-select-customize-input) .ant-select-selector {
+    height: auto;
+    width: auto; /* Assuming you want to keep the width and other styles */
+    background-color: #818181 !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+  }
+  .ant-select-selection-item {
+    color: white !important;
+    font-weight: 550 !important;
+  }
+}
+.statusStylePending {
+  .ant-select-selector {
+    height: auto;
+    width: auto;
+    background-color: #f0e68c !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    text-align: center;
+    .ant-select-selection-item {
+      padding: 0px !important;
+    }
+  }
+  .ant-select-single:not(.ant-select-customize-input) .ant-select-selector {
+    height: auto;
+    width: auto; /* Assuming you want to keep the width and other styles */
+    background-color: #f0e68c !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+  }
+  .ant-select-selection-item {
+    color: black !important;
+    font-weight: 550 !important;
+  }
+}
+.statusStyleNormal {
+  width: 100% !important;
+  .ant-select-selector {
+    text-align: center !important;
+    .ant-select-selection-item {
+      color: black !important;
+      font-weight: 550 !important;
+    }
+  }
+}
+
+.custom-input:hover {
+  border-color: #3367ab !important; /* Thay đổi màu viền khi hover */
+  border-right-width: 1px;
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2) !important; /* Thêm hiệu ứng bóng */
+}
+
+.ant-form-item-has-error .ant-picker {
+  border-color: #ff4d4f !important;
+}
+
+.custom-pre {
+  font-family: inherit;
+}
+.text-custom {
+  font-size: 8;
+  color: red;
+  padding-top: 3px;
+}

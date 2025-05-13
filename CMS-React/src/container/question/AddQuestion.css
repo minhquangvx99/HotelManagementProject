@@ -1,0 +1,83 @@
+.full-width {
+    width: 100%;
+  }
+  
+  .answer-row {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  
+  .answer-row .ant-form-item {
+    flex-grow: 1;
+  }
+  
+  .answer-row .ant-radio-wrapper {
+    padding-right: 16px;
+  }
+  
+  .ant-form-item {
+    margin-bottom: 8px;
+  }
+  
+  textarea {
+    width: 100%;
+  }
+  .statusStyleActive {
+    width: 100% !important;
+    .ant-select-selector {
+      background-color: #0075FF !important;
+      text-align: center !important;
+      .ant-select-selection-item {
+        color: white !important;
+        font-weight: 550 !important;
+      }
+    }
+  }
+  .statusStyleInactive1 {
+    width: 100% !important;
+    .ant-select-selector {
+      background-color: #F0E68C !important;
+      text-align: center !important;
+      .ant-select-selection-item {
+        color: black !important;
+        font-weight: 550 !important;
+      }
+    }
+  }
+
+  .statusStyleNormal {
+    width: 100% !important;
+    .ant-select-selector {
+      text-align: center !important;
+      .ant-select-selection-item {
+        color: black !important;
+        font-weight: 550 !important;
+      }
+    }
+  }
+
+  .ScoreStyle {
+    .ant-form-item-row{
+      .ant-form-item-label{
+        padding: 0 !important;
+      }
+    }
+  }
+
+  .custom-select:hover .ant-select-selector {
+    border-color: #164D9E !important; /* Customize the border color as needed */
+  }
+
+  .custom-input:hover {
+    border-color: #164D9E !important; /* Customize the border color as needed */
+  }
+  .ant-select-selector {
+    width: 100% !important;
+    /* height: 49.7px !important; */
+  }
+
+  .border-red .ant-select-selector {
+    border-color: red !important;
+  }
