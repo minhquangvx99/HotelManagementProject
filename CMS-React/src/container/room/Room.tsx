@@ -257,7 +257,6 @@ const Room: FC<IRoom> = (props) => {
 
   const handleDeleteRoom = () => {
     roomForEdit?.ID && dispatch(deleteRoom(roomForEdit?.ID));
-    getListRoom();
     !loading && closeModalConfirm();
     setState((state) => ({ ...state, page: 1 }));
   };
@@ -311,7 +310,7 @@ const Room: FC<IRoom> = (props) => {
         Type: formRef1.current?.getFieldValue('Type')?.trim(),
         Price: formRef1.current?.getFieldValue('Price'),
       };
-      dispatch(createRoom(roomItem));
+      dispatch(updateRoom(roomItem));
     }
     else {
       let roomItem = {
@@ -321,10 +320,40 @@ const Room: FC<IRoom> = (props) => {
         Type: formRef1.current?.getFieldValue('Type')?.trim(),
         Price: formRef1.current?.getFieldValue('Price'),
       };
-      dispatch(updateRoom(roomItem));
+      dispatch(createRoom(roomItem));
     }
     !loading && closeModalConfirm();
     setState((state) => ({ ...state, searchKey: '', page: 1 }));
+  };
+
+
+  useEffect(() => {
+    state.typeConfirm === 1 &&
+      formRef1.current?.setFieldsValue({
+        Number: roomForEdit?.Number,
+        Status: roomForEdit?.Status,
+        HotelId: roomForEdit?.HotelId,
+        Type: roomForEdit?.Type,
+        Price: roomForEdit?.Price,
+      });
+
+    state.typeConfirm === 2 &&
+      formRef1.current?.setFieldsValue({
+        Number: '',
+        Status: '',
+        HotelId: '',
+        Type: '',
+        Price: '',
+      });
+  }, [roomForEdit, state.typeConfirm]);
+
+  const handleChange = (e: any) => {
+    const value = e.target.value;
+    // Loại bỏ các ký tự không phải số và giới hạn tối đa 16 ký tự
+    const newValue = value.replace(/\D/g, '').slice(0, 16);
+    formRef1.current?.setFieldsValue({
+      Price: newValue,
+    });
   };
 
   const tableDataScource: IRoomTableData[] = [];
@@ -411,7 +440,7 @@ const Room: FC<IRoom> = (props) => {
             <Link
               className="edit"
               to="#"
-              onClick={(e) => { () => openModalConfirm(1, item) }}
+              onClick={() => openModalConfirm(1, item)}
             >
               <UilPen style={{ width: 20 }} color={themeColor['dark-gray']} />
             </Link>
@@ -590,7 +619,7 @@ const Room: FC<IRoom> = (props) => {
                 className="ninjadash-datatable-filter__action"
                 style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '15px', marginBottom: '15px' }}
               >
-                <Button style={{ minWidth: 120 }} mergetype="dark-success" onClick={() => handleAdd()}>
+                <Button style={{ minWidth: 120 }} mergetype="dark-success" onClick={() => openModalConfirm(1, {} as RoomModel)}>
                   <UilPlus />
                   Add
                 </Button>
@@ -657,53 +686,80 @@ const Room: FC<IRoom> = (props) => {
             </Heading>
           </div>
 
-          <Form
+            <Form
             hidden={state.typeConfirm === 1 ? false : true}
             form={form1}
             ref={formRef1}
             name="ninjadash-vertical-form"
             layout="vertical"
-          >
+            >
             <Form.Item
-              name="Name"
+              name="Number"
               label={
-                <span style={{ fontSize: 18, fontWeight: 600 }}>
-                  {' '}
-                  <span style={{ color: 'red' }}>*</span>Name
-                </span>
+              <span style={{ fontSize: 18, fontWeight: 600 }}>
+                {' '}
+                <span style={{ color: 'red' }}>*</span>Number
+              </span>
               }
               normalize={(value) => value.trimStart()}
             >
               <Input />
             </Form.Item>
             <Form.Item
-              name="Address"
+              name="Type"
               label={
-                <span style={{ fontSize: 18, fontWeight: 600 }}>
-                  {' '}
-                  Address
-                </span>
+              <span style={{ fontSize: 18, fontWeight: 600 }}>
+                {' '}
+                Type
+              </span>
               }
               normalize={(value) => value.trimStart()}
             >
               <Input />
             </Form.Item>
             <Form.Item
-              name="ManagerName"
+              name="Price"
               label={
-                <span style={{ fontSize: 18, fontWeight: 600 }}>
-                  {' '}
-                  ManagerName
-                </span>
+              <span style={{ fontSize: 18, fontWeight: 600 }}>
+                {' '}
+                Price
+              </span>
+              }
+              normalize={(value) => value.trimStart()}
+            >
+              <Input onChange={handleChange} maxLength={16} />
+            </Form.Item>
+            <Form.Item
+              name="HotelId"
+              label={
+              <span style={{ fontSize: 18, fontWeight: 600 }}>
+                {' '}
+                HotelName
+              </span>
               }
               normalize={(value) => value.trimStart()}
             >
               <Input />
             </Form.Item>
-          </Form>
+            <Form.Item
+              name="Status"
+              label={
+              <span style={{ fontSize: 18, fontWeight: 600 }}>
+                {' '}
+                Status
+              </span>
+              }
+              normalize={(value) => value}
+            >
+              <Select
+              placeholder="Select Status"
+              options={statusShow}
+              />
+            </Form.Item>
+            </Form>
         </Modal>
       </Main>
-    </RoomMainLayout>
+    </RoomMainLayout >
   );
 };
 

@@ -8,6 +8,7 @@ import {
   FETCH_LIST_ROOM_PAGING,
   FetchDetailsRoomAction,
   FetchListRoomPagingAction,
+  RoomDetailGetModel,
   UPDATE_ROOM,
   UpdateRoomAction,
 } from './Types';
@@ -80,7 +81,7 @@ function* fetchDetailsRoomSaga(action: FetchDetailsRoomAction) {
         yield put(fetchDetailsRoomErr('Get Details Room Failed'));
       }
     } else {
-      yield put(fetchDetailsRoomErr('Get Details Room Failed'));
+      yield put(fetchDetailsRoomSuccess({} as RoomDetailGetModel));
     }
   } catch (error) {
     console.log(error);
@@ -110,6 +111,7 @@ function* updateRoomSaga(action: UpdateRoomAction) {
   try {
     const response: ApiResponse<any> = yield apiCall(apiPutCall, API_ENDPOINT_UPDATE_ROOM, { ...action.payload });
     if (response.data && response.data.Data && response.data.Success) {
+      yield put(fetchListRoomPaging(1, 10, 0, '', '', ''));
       yield put(updateRoomSuccess());
       openNotification('success', 'Success', 'Saved successfully');
     } else {
@@ -131,6 +133,7 @@ function* deleteRoom(action: DeleteRoomAction) {
       {},
     );
     if (response.data) {
+      yield put(fetchListRoomPaging(1, 10, 0, '', '', ''));
       openNotification('success', 'Success', 'Deleted successfully');
       yield put(deleteRoomSuccess());
     } else {
