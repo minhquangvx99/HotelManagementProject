@@ -80,7 +80,6 @@ namespace API.Controllers
                 var currentUser = _userBS.GetById(User.ID);
                 currentUser.Name = user.Name.Trim();
                 currentUser.Email = user.Email;
-                currentUser.Username = user.Email;
                 if (!string.IsNullOrEmpty(user.Birthday))
                 {
                     currentUser.Birthday = Extension.ConvertDate(user.Birthday);
