@@ -72,24 +72,6 @@ namespace Core.Data
         {
             switch (dialect)
             {
-                case Dialect.PostgreSQL:
-                    _dialect = Dialect.PostgreSQL;
-                    _encapsulation = "\"{0}\"";
-                    _getIdentitySql = string.Format("SELECT LASTVAL() AS id");
-                    _getPagedListSql = "Select {SelectColumns} from {TableName} {WhereClause} Order By {OrderBy} LIMIT {RowsPerPage} OFFSET (({PageNumber}-1) * {RowsPerPage})";
-                    break;
-                case Dialect.SQLite:
-                    _dialect = Dialect.SQLite;
-                    _encapsulation = "\"{0}\"";
-                    _getIdentitySql = string.Format("SELECT LAST_INSERT_ROWID() AS id");
-                    _getPagedListSql = "Select {SelectColumns} from {TableName} {WhereClause} Order By {OrderBy} LIMIT {RowsPerPage} OFFSET (({PageNumber}-1) * {RowsPerPage})";
-                    break;
-                case Dialect.MySQL:
-                    _dialect = Dialect.MySQL;
-                    _encapsulation = "`{0}`";
-                    _getIdentitySql = string.Format("SELECT LAST_INSERT_ID() AS id");
-                    _getPagedListSql = "Select {SelectColumns} from {TableName} {WhereClause} Order By {OrderBy} LIMIT {Offset},{RowsPerPage}";
-                    break;
                 default:
                     _dialect = Dialect.SQLServer;
                     _encapsulation = "[{0}]";
@@ -977,10 +959,7 @@ namespace Core.Data
         /// </summary>
         public enum Dialect
         {
-            SQLServer,
-            PostgreSQL,
-            SQLite,
-            MySQL,
+            SQLServer
         }
 
         public interface ITableNameResolver

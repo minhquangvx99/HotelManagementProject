@@ -22,7 +22,7 @@ namespace API.Controllers
 
         [Route("getRoomFullPaging")]
         [HttpGet]
-        public async Task<IActionResult> GetRoomPaging(int hotelId , string codeSearch = "", string type = "", string status ="", int pageIndex = 1, int pageSize = 1)
+        public IActionResult GetRoomPaging(int hotelId , string codeSearch = "", string type = "", string status ="", int pageIndex = 1, int pageSize = 1)
         {
             int totalRow = 0;
             try
@@ -38,7 +38,7 @@ namespace API.Controllers
 
         [Route("getRoomDetail")]
         [HttpGet]
-        public async Task<IActionResult> GetRoomDetail(int roomId)
+        public IActionResult GetRoomDetail(int roomId)
         {
             try
             {
@@ -54,7 +54,7 @@ namespace API.Controllers
 
         [Route("createRoom")]
         [HttpPost]
-        public async Task<IActionResult> CreateRoom(RoomCreateModel roomCreateModel)
+        public IActionResult CreateRoom(RoomCreateModel roomCreateModel)
         {
             try
             {
@@ -80,7 +80,7 @@ namespace API.Controllers
 
         [Route("updateRoom")]
         [HttpPut]
-        public async Task<IActionResult> UpdateRoom(RoomUpdateModel roomUpdateModel)
+        public IActionResult UpdateRoom(RoomUpdateModel roomUpdateModel)
         {
             try
             {
@@ -107,7 +107,7 @@ namespace API.Controllers
 
         [Route("delete")]
         [HttpDelete]
-        public async Task<IActionResult> Delete(int roomID)
+        public IActionResult Delete(int roomID)
         {
             try
             {

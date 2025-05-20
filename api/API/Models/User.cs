@@ -31,10 +31,6 @@ namespace API.Models
 
         public int ID { get; set; }
 
-        public int RoleID { get; set; }
-
-        public int ClassID { get; set; }
-
         public string Name { get; set; }
 
         public int Status { get; set; }
@@ -45,10 +41,6 @@ namespace API.Models
 
         public DateTime Birthday { get; set; }
 
-        public string Title { get; set; }
-
-        public string Company { get; set; }
-
         public string Address { get; set; }
 
         public string PhoneNumber { get; set; }
@@ -57,33 +49,20 @@ namespace API.Models
 
         public int Gender { get; set; }
 
-        public DateTime? ActiveDate { get; set; }
-
-        public DateTime? ExpireDate { get; set; }
-
-        public decimal TuitionFee { get; set; }
-
         public static UserModel genFromPrincipal(UserPrincipal user)
         {
             return new UserModel()
             {
                 ID = user.ID,
-                RoleID = user.RoleID,
-                ClassID = user.ClassID,
                 Name = user.Name,
                 Status = user.Status,
                 Email = user.Email,
                 Username = user.Email,
                 Birthday = user.Birthday,
-                Title = user.Title,
-                Company = user.Company,
                 Address = user.Address,
                 PhoneNumber = user.PhoneNumber,
                 Password = user.Password,
                 Gender = user.Gender,
-                ActiveDate = user.ActiveDate,
-                ExpireDate = user.ExpireDate,
-                TuitionFee = user.TuitionFee,
             };
         }
     }
@@ -108,10 +87,6 @@ namespace API.Models
 
         public int ID { get; set; }
 
-        public int RoleID { get; set; }
-
-        public int ClassID { get; set; }
-
         public string Name { get; set; }
 
         public int Status { get; set; }
@@ -122,10 +97,6 @@ namespace API.Models
 
         public DateTime Birthday { get; set; }
 
-        public string Title { get; set; }
-
-        public string Company { get; set; }
-
         public string Address { get; set; }
 
         public string PhoneNumber { get; set; }
@@ -133,12 +104,6 @@ namespace API.Models
         public string Password { get; set; }
 
         public int Gender { get; set; }
-
-        public DateTime? ActiveDate { get; set; }
-
-        public DateTime? ExpireDate { get; set; }
-
-        public decimal TuitionFee { get; set; }
 
         public static UserPrincipal genFromModel(UserEntity user)
         {

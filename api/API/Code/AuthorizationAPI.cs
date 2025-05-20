@@ -42,7 +42,7 @@ namespace API.Code
                     UserPrincipal newUser = UserPrincipal.genFromModel(serializeModel);
                     filterContext.HttpContext.User = newUser;
                 }
-                catch (Exception ex)
+                catch
                 {
                     filterContext.HttpContext.Response.StatusCode = (int)HttpStatusCode.Forbidden;
                     filterContext.HttpContext.Response.HttpContext.Features.Get<IHttpResponseFeature>().ReasonPhrase = "Not Authorized";
