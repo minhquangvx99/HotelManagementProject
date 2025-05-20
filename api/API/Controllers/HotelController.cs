@@ -80,9 +80,6 @@ namespace API.Controllers
                     ModifiedDate = DateTime.Now,
                 };
 
-/*                HotelEntity existed = _hotelBS.GetHotelByName(hotelCreateModel.Name.ToLower());
-                if (existed != null) return ReturnError("Name " + hotelCreateModel.Name + " existed");*/
-
                 HotelEntity rs = _hotelBS.Insert(hotelEntity);
                 if (rs == null) return ReturnError("Add new Hotel failed");
 
@@ -129,13 +126,6 @@ namespace API.Controllers
                 hotel.StarsNumber = hotelUpdateModel.StarsNumber;
                 hotel.ManagerName = hotelUpdateModel.ManagerName;
                 hotel.ModifiedDate = DateTime.Now;
-
-/*                // check tên đã tồn tại
-                if (hotel.Name.ToLower() != hotelUpdateModel.hotel.Name.ToLower())
-                {
-                    HotelEntity existed = _hotelBS.GetHotelByName(hotelUpdateModel.hotel.Name.ToLower());
-                    if (existed != null) return ReturnError("Name " + hotelUpdateModel.hotel.Name + " existed");
-                }*/
 
                 bool rs = _hotelBS.Update(hotel);
                 if (rs == false) return ReturnError("Update Hotel failed");
