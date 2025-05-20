@@ -48,7 +48,7 @@ namespace Core.Configuration
                 //var val = config.GetValue<T>(key);
                 return val;
             }
-            catch (Exception ex)
+            catch
             {
                 return default(T);
             }
