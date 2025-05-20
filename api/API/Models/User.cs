@@ -1,8 +1,5 @@
-﻿using API.Helper;
-using Entities.Users;
-using Services;
+﻿using Entities.Users;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using System.Security.Principal;

@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
 using API.Helper;
-using System.Threading.Tasks;
 
 namespace API.Controllers
 {

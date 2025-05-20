@@ -1,4 +1,3 @@
-using API.Code;
 using API.Models;
 using BusinessLogicLayer;
 using Services;
@@ -13,7 +12,6 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using MySql.Data.MySqlClient;
 using NetCore.AutoRegisterDi;
 using Newtonsoft.Json;
 using System;
@@ -23,7 +21,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Data.SqlClient;
-using MNP.Code;
 
 namespace API
 {
@@ -44,8 +41,6 @@ namespace API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers(options => { options.Filters.Add(typeof(CustomExceptionFilter)); });
-            // Add detection services container and device resolver service.
             services.AddDetection();
 
             // Add CORS policy
@@ -60,10 +55,7 @@ namespace API
                     });
             });
 
-            services.AddControllers(options =>
-            {
-                options.ModelBinderProviders.Insert(0, new ModelMultipleBinderProvider());
-            }).AddJsonOptions(options =>
+            services.AddControllers().AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.PropertyNamingPolicy = null;
             })
@@ -120,8 +112,6 @@ namespace API
             services.AddSingleton<string>(e => connectionString);
             // Add functionality to inject IOptions<T>
             services.AddOptions();
-            // Add our Config object so it can be injected
-            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
 
             services.AddHttpContextAccessor();
 
@@ -162,32 +152,14 @@ namespace API
                     errorApp.Run(async context =>
                     {
                         var exception = context.Features.Get<IExceptionHandlerPathFeature>();
-                        if (context.Request.IsAjaxRequest())
+                        context.Response.StatusCode = 200;
+                        context.Response.ContentType = "application/json";
+                        await context.Response.WriteAsync(JsonConvert.SerializeObject(new
                         {
-                            context.Response.StatusCode = 200;
-                            context.Response.ContentType = "application/json";
-                            await context.Response.WriteAsync(JsonConvert.SerializeObject(new
-                            {
-                                Success = false,
-                                Message = exception.Error.Message,
-                                Trace = exception.Error.StackTrace.ToString(),
-                            }));
-                        }
-                        else
-                        {
-                            context.Response.StatusCode = 500;
-                            context.Response.ContentType = "text/html";
-
-                            await context.Response.WriteAsync("<html lang=\"en\"><body>\r\n");
-                            await context.Response.WriteAsync("ERROR!<br><br>\r\n");
-
-                            await context.Response.WriteAsync(string.Format("<p style'color:red'><b>{0}</b></p>", exception.Error.Message));
-                            await context.Response.WriteAsync(string.Format("<div><div><b>Trace:</b></div> <p>{0}</p></div>", exception.Error.StackTrace.ToString()));
-
-                            await context.Response.WriteAsync("<a href=\"/\">Home</a><br>\r\n");
-                            await context.Response.WriteAsync("</body></html>\r\n");
-                            await context.Response.WriteAsync(new string(' ', 512)); // IE padding
-                        }
+                            Success = false,
+                            Message = exception.Error.Message,
+                            Trace = exception.Error.StackTrace.ToString(),
+                        }));
                     });
                 });
             }
