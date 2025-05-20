@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Metadata;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -17,6 +18,12 @@ namespace API.Code
     {
 
     }
+
+/*    Là binder tùy chỉnh, có nhiệm vụ:
+    Đọc toàn bộ request body(JSON)
+    Dò tìm theo tên biến(ví dụ: User hay Filter) trong JSON
+    Lấy phần tử JSON tương ứng với tên đó
+    Convert sang đúng kiểu dữ liệu cần thiết*/
     public class ModelMultipleBinder : IModelBinder
     {
         public ModelMultipleBinder()
@@ -58,7 +65,8 @@ namespace API.Code
             return Task.CompletedTask;
         }
     }
-
+/*    Là lớp giúp ASP.NET Core đăng ký binder tùy chỉnh khi khởi chạy.
+    Nó kiểm tra nếu một thuộc tính có [PostMultipleParams], thì sẽ dùng ModelMultipleBinder.*/
     public class ModelMultipleBinderProvider : IModelBinderProvider
     {
         public IModelBinder GetBinder(ModelBinderProviderContext context)

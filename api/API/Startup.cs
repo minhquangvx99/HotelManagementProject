@@ -115,15 +115,13 @@ namespace API
 
             // Identity Services
             string connectionString = Configuration.GetConnectionString("DefaultConnection");
-            services.AddSingleton<IDbConnection>(e => new MySqlConnection(connectionString));
+            //Inject IDbConnection, with implementation from SqlConnection class.
+            services.AddSingleton<IDbConnection>((sp) => new SqlConnection(connectionString));
             services.AddSingleton<string>(e => connectionString);
             // Add functionality to inject IOptions<T>
             services.AddOptions();
             // Add our Config object so it can be injected
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
-
-            //Inject IDbConnection, with implementation from SqlConnection class.
-            services.AddSingleton<IDbConnection>((sp) => new SqlConnection(connectionString));
 
             services.AddHttpContextAccessor();
 
