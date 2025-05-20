@@ -20,7 +20,7 @@ namespace API.Code
 {
     public class AuthorizationAPI : Attribute, IAuthorizationFilter
     {
-        public static string TokenSecret = "NMQ";
+        public static string TokenSecret = "K8n#7vR!qz3*W@dY$P9lTbXe&MjA6fNc";
         public void OnAuthorization(AuthorizationFilterContext filterContext)
         {
             bool skipAuthorization = (filterContext.ActionDescriptor as ControllerActionDescriptor).MethodInfo.IsDefined(typeof(AllowAnonymousAttribute), true);
