@@ -17,7 +17,6 @@ namespace API.Controllers
             _hotelBS = hotelBS;
         }
 
-        [AllowAnonymous]
         [Route("getHotelPaging")]
         [HttpGet]
         public IActionResult GetHotelPaging(int pageIndex = 1, int pageSize = 1, string searchKey = "")
@@ -34,7 +33,6 @@ namespace API.Controllers
             }
         }
 
-        [AllowAnonymous]
         [Route("getAllHotel")]
         [HttpGet]
         public IActionResult GetAllHotel()
@@ -50,7 +48,6 @@ namespace API.Controllers
             }
         }
 
-        [AllowAnonymous]
         [Route("getHotelById/{hotelId}")]
         [HttpGet]
         public IActionResult GetHotelByID(int hotelId)
@@ -66,7 +63,6 @@ namespace API.Controllers
             }
         }
 
-        [AllowAnonymous]
         [Route("create")]
         [HttpPost]
         public IActionResult Create(HotelCreateModel hotelCreateModel)
@@ -98,7 +94,6 @@ namespace API.Controllers
             }
         }
 
-        [AllowAnonymous]
         [Route("delete")]
         [HttpPost]
         public IActionResult Delete(int hotelId)
@@ -118,7 +113,6 @@ namespace API.Controllers
             }
         }
 
-        [AllowAnonymous]
         [Route("update")]
         [HttpPost]
         public IActionResult Update(HotelEntity hotelUpdateModel)

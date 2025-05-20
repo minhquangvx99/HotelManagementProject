@@ -20,7 +20,6 @@ namespace API.Controllers
             _roomBS = roomBS;
         }
 
-        [AllowAnonymous]
         [Route("getRoomFullPaging")]
         [HttpGet]
         public async Task<IActionResult> GetRoomPaging(int hotelId , string codeSearch = "", string type = "", string status ="", int pageIndex = 1, int pageSize = 1)
@@ -37,7 +36,6 @@ namespace API.Controllers
             }
         }
 
-        [AllowAnonymous]
         [Route("getRoomDetail")]
         [HttpGet]
         public async Task<IActionResult> GetRoomDetail(int roomId)
@@ -54,7 +52,6 @@ namespace API.Controllers
             }
         }
 
-        [AllowAnonymous]
         [Route("createRoom")]
         [HttpPost]
         public async Task<IActionResult> CreateRoom(RoomCreateModel roomCreateModel)
@@ -83,7 +80,6 @@ namespace API.Controllers
 
         [Route("updateRoom")]
         [HttpPut]
-        [AllowAnonymous]
         public async Task<IActionResult> UpdateRoom(RoomUpdateModel roomUpdateModel)
         {
             try
@@ -111,7 +107,6 @@ namespace API.Controllers
 
         [Route("delete")]
         [HttpDelete]
-        [AllowAnonymous]
         public async Task<IActionResult> Delete(int roomID)
         {
             try
